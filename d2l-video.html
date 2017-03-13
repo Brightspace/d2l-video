@@ -1,0 +1,131 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import" href="../d2l-button/d2l-button.html">
+<link rel="import" href="../d2l-icons/d2l-icon.html">
+<link rel="import" href="../d2l-icons/tier1-icons.html">
+<link rel="import" href="../d2l-icons/tier3-icons.html">
+<link rel="import" href="../d2l-media-behavior/d2l-media-behavior.html">
+<link rel="import" href="../d2l-seek-bar/d2l-seek-bar.html">
+<link rel="import" href="../d2l-typography/d2l-typography.html">
+
+<dom-module id="d2l-video">
+  <template strip-whitespace>
+    <style is="custom-style" include="iron-flex iron-flex-alignment d2l-typography">
+			:host {
+				display: inline-block;
+				position: relative;
+			}
+
+			#media {
+				display: block;
+				height: 100%;
+				width: 100%;
+			}
+
+			#controlBar {
+				position: absolute;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				height: 50px;
+				background-color: rgba(0, 0, 0, 0.6);
+				width: 100%;
+			}
+
+			#controlBar .control {
+				margin: 0 10px;
+			}
+
+			#controlBar .seek-control {
+				margin: 0 10px;
+			}
+
+			.expand {
+				margin-right: 20px !important;
+			}
+
+      #playPauseButton {
+				margin-left: 20px !important;
+        width: 30px;
+        height: 30px;
+				min-height: 30px;
+        border: 0;
+        padding: 0;
+				line-height: 0;
+      }
+
+			#playPauseButton d2l-icon {
+				--d2l-icon-height: 15px;
+				--d2l-icon-width: 15px;
+				color: var(--d2l-color-white);
+			}
+
+			.control-icon {
+				display: block;
+			}
+
+			d2l-icon {
+				color: White;
+			}
+
+			d2l-icon[hidden] {
+				display: none;
+			}
+
+			d2l-seek-bar {
+				margin: 0 15px;
+				--d2l-progress-border-color: var(--d2l-color-tungsten);
+				--d2l-progress-background-color: rgba(230, 234, 240, 0.4);
+				--d2l-progress-shadow-color: rgba(0, 0, 0, 0.1);
+			}
+
+			.time {
+				color: var(--d2l-color-white);
+			}
+    </style>
+
+    <video id="media">
+      <source src="{{ src }}">
+    </video>
+
+		<div id="controlBar" class="layout horizontal center d2l-typography">
+			<button class="control" is="d2l-button" id="playPauseButton" primary on-tap="playPause">
+				<d2l-icon hidden$="{{ isPlaying }}" icon="d2l-tier3:play-borderless"></d2l-icon>
+				<d2l-icon hidden$="{{ !isPlaying }}" icon="d2l-tier3:pause-borderless"></d2l-icon>
+			</button>
+			<div class="control">
+				<d2l-icon class="control-icon" icon="d2l-tier1:volume"></d2l-icon>
+			</div>
+			<div class="flex seek-control">
+				<d2l-seek-bar
+					value="[[ percentComplete ]]"
+					immediate-value="{{ immediateValue }}"
+					on-drag-start="_onSeekStart"
+					on-drag-end="_onSeekEnd"></d2l-seek-bar>
+			</div>
+			<div class="time control d2l-body-compact">{{ _formatTime(currentTime) }} / {{ _formatTime(duration) }}</div>
+			<div class="expand control">
+				<d2l-icon class="control-icon" icon="d2l-tier1:fullscreen"></d2l-icon>
+			</div>
+		</div>
+  </template>
+
+  <script>
+  Polymer({
+    is: 'd2l-video',
+
+    behaviors: [
+      D2LMediaBehavior,
+    ],
+
+    properties: {
+      info: {
+        type: String,
+        value: 'Recorded Fevember 32nd at 26:72 RM',
+      },
+    }
+  });
+  </script>
+
+</dom-module>
+
