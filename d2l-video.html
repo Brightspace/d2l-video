@@ -9,8 +9,8 @@
 <link rel="import" href="../d2l-typography/d2l-typography.html">
 
 <dom-module id="d2l-video">
-  <template strip-whitespace>
-    <style is="custom-style" include="iron-flex iron-flex-alignment d2l-typography">
+	<template strip-whitespace>
+		<style is="custom-style" include="iron-flex iron-flex-alignment d2l-typography">
 			:host {
 				display: inline-block;
 				position: relative;
@@ -44,19 +44,19 @@
 				margin-right: 20px !important;
 			}
 
-      #playPauseButton {
+			#playPauseButton {
 				margin-left: 20px !important;
-        width: 30px;
-        height: 30px;
+				width: 30px;
+				height: 30px;
 				min-height: 30px;
-        border: 0;
-        padding: 0;
+				border: 1px solid White;
+				padding: 0;
 				line-height: 0;
-      }
+			}
 
 			#playPauseButton d2l-icon {
-				--d2l-icon-height: 15px;
-				--d2l-icon-width: 15px;
+				--d2l-icon-height: 14px;
+				--d2l-icon-width: 14px;
 				color: var(--d2l-color-white);
 			}
 
@@ -77,19 +77,22 @@
 				--d2l-progress-border-color: var(--d2l-color-tungsten);
 				--d2l-progress-background-color: rgba(230, 234, 240, 0.4);
 				--d2l-progress-shadow-color: rgba(0, 0, 0, 0.1);
+				--d2l-inner-knob-margin: 5px;
+				--d2l-knob-size: 24px;
 			}
 
 			.time {
 				color: var(--d2l-color-white);
 			}
-    </style>
 
-    <video id="media">
-      <source src="{{ src }}">
-    </video>
+		</style>
+
+		<video id="media">
+			<source src="{{ src }}">
+		</video>
 
 		<div id="controlBar" class="layout horizontal center d2l-typography">
-			<button class="control" is="d2l-button" id="playPauseButton" primary on-tap="playPause">
+			<button is="d2l-button" class="layout horizontal center-center control" id="playPauseButton" primary on-tap="playPause">
 				<d2l-icon hidden$="{{ isPlaying }}" icon="d2l-tier3:play-borderless"></d2l-icon>
 				<d2l-icon hidden$="{{ !isPlaying }}" icon="d2l-tier3:pause-borderless"></d2l-icon>
 			</button>
@@ -97,35 +100,31 @@
 				<d2l-icon class="control-icon" icon="d2l-tier1:volume"></d2l-icon>
 			</div>
 			<div class="flex seek-control">
-				<d2l-seek-bar
-					value="[[ percentComplete ]]"
-					immediate-value="{{ immediateValue }}"
-					on-drag-start="_onSeekStart"
-					on-drag-end="_onSeekEnd"></d2l-seek-bar>
+				<d2l-seek-bar value="[[ percentComplete ]]" immediate-value="{{ immediateValue }}" on-drag-start="_onSeekStart" on-drag-end="_onSeekEnd"></d2l-seek-bar>
 			</div>
 			<div class="time control d2l-body-compact">{{ _formatTime(currentTime) }} / {{ _formatTime(duration) }}</div>
 			<div class="expand control">
 				<d2l-icon class="control-icon" icon="d2l-tier1:fullscreen"></d2l-icon>
 			</div>
 		</div>
-  </template>
+	</template>
 
-  <script>
-  Polymer({
-    is: 'd2l-video',
+	<script>
+		Polymer({
+			is: 'd2l-video',
 
-    behaviors: [
-      D2LMediaBehavior,
-    ],
+			behaviors: [
+				D2LMediaBehavior
+			],
 
-    properties: {
-      info: {
-        type: String,
-        value: 'Recorded Fevember 32nd at 26:72 RM',
-      },
-    }
-  });
-  </script>
+			properties: {
+				info: {
+					type: String,
+					value: 'Recorded Fevember 32nd at 26:72 RM'
+				}
+			}
+		});
+
+	</script>
 
 </dom-module>
-
