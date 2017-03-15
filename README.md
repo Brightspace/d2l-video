@@ -15,7 +15,7 @@ A polymer video player component.
   		]
 	},
 	"resolvers": [
-  	"bower-art-resolver"
+		"bower-art-resolver"
 	]
 }
 ```
