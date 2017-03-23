@@ -44,22 +44,6 @@
 				margin-right: 20px !important;
 			}
 
-			#playPauseButton {
-				margin-left: 20px !important;
-				width: 30px;
-				height: 30px;
-				min-height: 30px;
-				border: 1px solid White;
-				padding: 0;
-				line-height: 0;
-			}
-
-			#playPauseButton d2l-icon {
-				--d2l-icon-height: 14px;
-				--d2l-icon-width: 14px;
-				color: var(--d2l-color-white);
-			}
-
 			.control-icon {
 				display: block;
 			}
@@ -85,6 +69,9 @@
 				color: var(--d2l-color-white);
 			}
 
+			.play-pause-container {
+				margin-left: 20px !important;
+			}
 		</style>
 
 		<video id="media">
@@ -92,10 +79,10 @@
 		</video>
 
 		<div id="controlBar" class="layout horizontal center d2l-typography">
-			<button is="d2l-button" class="layout horizontal center-center control" id="playPauseButton" primary on-tap="playPause">
-				<d2l-icon hidden$="{{ isPlaying }}" icon="d2l-tier3:play-borderless"></d2l-icon>
-				<d2l-icon hidden$="{{ !isPlaying }}" icon="d2l-tier3:pause-borderless"></d2l-icon>
-			</button>
+			<div class="control play-pause-container">
+				<d2l-icon hidden$="{{ isPlaying }}" icon="d2l-tier3:play" on-tap="playPause"></d2l-icon>
+				<d2l-icon hidden$="{{ !isPlaying }}" icon="d2l-tier3:pause" on-tap="playPause"></d2l-icon>
+			</div>
 			<div class="control">
 				<d2l-icon class="control-icon" icon="d2l-tier1:volume"></d2l-icon>
 			</div>
