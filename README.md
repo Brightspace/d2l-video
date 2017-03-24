@@ -31,6 +31,24 @@ A polymer video player component.
 <d2l-video src="http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4"></d2l-video>
 ```
 
+## Properties
+
+`src` - String: Video URL or URL where the video URL can be requested (see `requestSrc`).
+
+`auto-load` - Boolean: If set, the video is loaded immediately when the component is loaded (or the `src` changes). Otherwise, the video is loaded when the play button is pressed.
+
+`poster` - String: URL to the poster image.
+
+`request-src` - Boolean: If set, the video URL is requested from the `src` URL. The response to this request must be *JSON* in the following format:
+
+```
+{
+	url: '<Video URL>'
+}
+```
+
+This is useful when auto-load is not set, for supporting signed video URLs that may expire prior to the play button being pressed.
+
 ## Development
 
 * `npm install`
