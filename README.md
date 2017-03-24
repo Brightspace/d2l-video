@@ -33,13 +33,13 @@ A polymer video player component.
 
 ## Properties
 
-`src` - String: Video URL or URL where the video URL can be requested (see `requestSrc`).
+`src (String)`: Video URL or URL where the video URL can be requested (see `requestSrc`).
 
-`auto-load` - Boolean: If set, the video is loaded immediately when the component is loaded (or the `src` changes). Otherwise, the video is loaded when the play button is pressed.
+`auto-load (Boolean)`: If set, the video is loaded immediately when the component is loaded (or the `src` changes). Otherwise, the video is loaded when the play button is pressed.
 
-`poster` - String: URL to the poster image.
+`poster (String)`: URL to the poster image.
 
-`request-src` - Boolean: If set, the video URL is requested from the `src` URL. The response to this request must be *JSON* in the following format:
+`request-src (Boolean)`: If set, the video URL is requested from the `src` URL. The response to this request must be *JSON* in the following format:
 
 ```
 {
