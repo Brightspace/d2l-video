@@ -74,14 +74,12 @@
 			}
 		</style>
 
-		<video id="media">
-			<source src="{{ src }}">
-		</video>
+		<video id="media" preload="{{ _getPreload(autoLoad) }}" poster="{{ poster }}"></video>
 
 		<div id="controlBar" class="layout horizontal center d2l-typography">
 			<div class="control play-pause-container">
-				<d2l-icon hidden$="{{ isPlaying }}" icon="d2l-tier3:play" on-tap="playPause"></d2l-icon>
-				<d2l-icon hidden$="{{ !isPlaying }}" icon="d2l-tier3:pause" on-tap="playPause"></d2l-icon>
+				<d2l-icon hidden$="{{ isPlaying }}" icon="d2l-tier3:play" on-tap="_playPause"></d2l-icon>
+				<d2l-icon hidden$="{{ !isPlaying }}" icon="d2l-tier3:pause" on-tap="_playPause"></d2l-icon>
 			</div>
 			<div class="control">
 				<d2l-icon class="control-icon" icon="d2l-tier1:volume"></d2l-icon>
@@ -105,10 +103,7 @@
 			],
 
 			properties: {
-				info: {
-					type: String,
-					value: 'Recorded Fevember 32nd at 26:72 RM'
-				}
+				poster: String
 			}
 		});
 
