@@ -1,4 +1,5 @@
 <link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../iron-a11y-keys-behavior/iron-a11y-keys-behavior.html">
 <link rel="import" href="../iron-flex-layout/iron-flex-layout-classes.html">
 <link rel="import" href="../d2l-button/d2l-button.html">
 <link rel="import" href="../d2l-icons/d2l-icon.html">
@@ -7,6 +8,7 @@
 <link rel="import" href="../d2l-media-behavior/d2l-media-behavior.html">
 <link rel="import" href="../d2l-seek-bar/d2l-seek-bar.html">
 <link rel="import" href="../d2l-typography/d2l-typography.html">
+<link rel="import" href="../fullscreen-api/fullscreen-api.html">
 
 <dom-module id="d2l-video">
 	<template strip-whitespace>
@@ -14,6 +16,13 @@
 			:host {
 				display: inline-block;
 				position: relative;
+				outline: 0;
+			}
+
+			#container {
+				width: 100%;
+				height: 100%;
+				background-color: Black;
 			}
 
 			#media {
@@ -36,8 +45,16 @@
 				margin: 0 10px;
 			}
 
+			#controlBar .time-control-left {
+				margin-right: 5px;
+			}
+
+			#controlBar .time-control-right {
+				margin-left: 5px;
+			}
+
 			#controlBar .seek-control {
-				margin: 0 10px;
+				margin: 0 5px;
 			}
 
 			.expand {
@@ -56,12 +73,15 @@
 				display: none;
 			}
 
-			d2l-seek-bar {
-				--d2l-progress-border-color: var(--d2l-color-tungsten);
-				--d2l-progress-background-color: rgba(230, 234, 240, 0.4);
-				--d2l-progress-shadow-color: rgba(0, 0, 0, 0.1);
-				--d2l-inner-knob-margin: 5px;
+			#seekBar {
 				--d2l-knob-size: 24px;
+				--d2l-inner-knob-margin: 6px;
+			}
+
+			#volumeBar {
+				--d2l-knob-size: 18px;
+				--d2l-inner-knob-color: var(--d2l-color-regolith);
+				--d2l-knob-box-shadow: 1px 1px 0 0 rgba(0, 0, 0, 0.4);
 			}
 
 			.time {
@@ -71,24 +91,46 @@
 			.play-pause-container {
 				margin-left: 20px !important;
 			}
+
+			.volume-control {
+				position: absolute;
+				bottom: 105px;
+				left: 12px;
+				background-color: rgba(0, 0, 0, 0.6);
+				border-radius: 8px;
+				width: 120px;
+				padding: 12px 6px;
+				transform: rotate(-90deg);
+			}
 		</style>
 
-		<video id="media" preload="{{ _getPreload(autoLoad) }}" poster="{{ poster }}"></video>
+		<fullscreen-api id="fsApi" target="#container" fullscreen="{{ isFullscreen }}"></fullscreen-api>
 
-		<div id="controlBar" class="layout horizontal center d2l-typography">
-			<div class="control play-pause-container">
-				<d2l-icon hidden$="{{ isPlaying }}" icon="d2l-tier3:play" on-tap="_playPause"></d2l-icon>
-				<d2l-icon hidden$="{{ !isPlaying }}" icon="d2l-tier3:pause" on-tap="_playPause"></d2l-icon>
-			</div>
-			<div class="control">
-				<d2l-icon class="control-icon" icon="d2l-tier1:volume"></d2l-icon>
-			</div>
-			<div class="flex seek-control">
-				<d2l-seek-bar value="[[ percentComplete ]]" immediate-value="{{ immediateValue }}" on-drag-start="_onSeekStart" on-drag-end="_onSeekEnd"></d2l-seek-bar>
-			</div>
-			<div class="time control d2l-body-compact">{{ _formatTime(currentTime) }} / {{ _formatTime(duration) }}</div>
-			<div class="expand control">
-				<d2l-icon class="control-icon" icon="d2l-tier1:fullscreen"></d2l-icon>
+		<div id="container" on-tap="_onContainerTap">
+			<video id="media" preload="{{ _getPreload(autoLoad) }}" poster="{{ poster }}" on-tap="_onVideoTap"></video>
+
+			<template is="dom-if" if="{{ volumeControlVisible }}">
+				<div class="volume-control" on-tap="_onVolumeControlTap">
+					<d2l-seek-bar id="volumeBar" value="40" immediate-value="{{ rawVolume }}" vertical></d2l-seek-bar>
+				</div>
+			</template>
+
+			<div id="controlBar" class="layout horizontal center d2l-typography">
+				<div class="control play-pause-container">
+					<d2l-icon hidden$="{{ isPlaying }}" icon="d2l-tier3:play" on-tap="_playPause"></d2l-icon>
+					<d2l-icon hidden$="{{ !isPlaying }}" icon="d2l-tier3:pause" on-tap="_playPause"></d2l-icon>
+				</div>
+				<div class="control">
+					<d2l-icon class="control-icon" icon="d2l-tier1:volume" on-tap="_toggleVolumeControl"></d2l-icon>
+				</div>
+				<div class="time control time-control-left d2l-body-compact">{{ _formatTime(currentTime) }}</div>
+				<div class="flex seek-control">
+					<d2l-seek-bar id="seekBar" value="[[ percentComplete ]]" immediate-value="{{ immediateValue }}" on-drag-start="_onSeekStart" on-drag-end="_onSeekEnd"></d2l-seek-bar>
+				</div>
+				<div class="time control time-control-right d2l-body-compact">{{ _formatTime(duration) }}</div>
+				<div class="expand control">
+					<d2l-icon class="control-icon" icon="[[ _getFullscreenIcon(isFullscreen) ]]" on-tap="_toggleFullscreen"></d2l-icon>
+				</div>
 			</div>
 		</div>
 	</template>
@@ -98,11 +140,59 @@
 			is: 'd2l-video',
 
 			behaviors: [
-				D2LMediaBehavior
+				D2LMediaBehavior,
+				Polymer.IronA11yKeysBehavior
 			],
 
 			properties: {
-				poster: String
+				poster: String,
+				rawVolume: {
+					type: Number,
+					observer: '_rawVolumeChanged'
+				},
+				volumeControlVisible: {
+					type: Boolean,
+					value: false
+				}
+			},
+
+			hostAttributes: {
+				tabindex: 0
+			},
+
+			keyBindings: {
+				'space': '_playPause'
+			},
+
+			_onContainerTap: function() {
+				if (this.volumeControlVisible) {
+					this.volumeControlVisible = false;
+				}
+			},
+
+			_getFullscreenIcon: function(isFullscreen) {
+				return isFullscreen ? 'd2l-tier1:smallscreen' : 'd2l-tier1:fullscreen';
+			},
+
+			_onVideoTap: function() {
+				this._playPause();
+			},
+
+			_onVolumeControlTap: function(e) {
+				e.stopPropagation();
+			},
+
+			_rawVolumeChanged: function(rawVolume) {
+				this.volume = rawVolume / 100;
+			},
+
+			_toggleFullscreen: function() {
+				this.$.fsApi.toggleFullscreen();
+			},
+
+			_toggleVolumeControl: function(e) {
+				e.stopPropagation();
+				this.volumeControlVisible = !this.volumeControlVisible;
 			}
 		});
 
