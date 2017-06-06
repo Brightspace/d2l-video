@@ -104,6 +104,12 @@
 				padding: 12px 6px;
 				transform: rotate(-90deg);
 			}
+
+			.play-pause-container,
+			.volume-container,
+			.expand {
+				cursor: pointer;
+			}
 		</style>
 
 		<fullscreen-api id="fsApi" target="#container" fullscreen="{{ isFullscreen }}"></fullscreen-api>
@@ -122,7 +128,7 @@
 					<d2l-icon hidden$="{{ isPlaying }}" icon="d2l-tier3:play" on-tap="_playPause"></d2l-icon>
 					<d2l-icon hidden$="{{ !isPlaying }}" icon="d2l-tier3:pause" on-tap="_playPause"></d2l-icon>
 				</div>
-				<div class="control">
+				<div class="control volume-container">
 					<d2l-icon class="control-icon" icon="d2l-tier1:volume" on-tap="_toggleVolumeControl"></d2l-icon>
 				</div>
 				<div class="time control time-control-left d2l-body-compact">{{ _formatTime(currentTime) }}</div>
