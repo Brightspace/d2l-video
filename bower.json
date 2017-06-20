@@ -1,6 +1,6 @@
 {
   "name": "d2l-video",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "homepage": "https://github.com/Brightspace/d2l-video",
   "license": "UNLICENSED",
   "ignore": [
@@ -15,7 +15,7 @@
     "d2l-colors": "^2.2.3",
     "d2l-icons": "^3.1.2",
     "d2l-media-behavior": "^0.0.11",
-    "d2l-seek-bar": "^0.0.12",
+    "d2l-seek-bar": "^0.0.15",
     "d2l-typography": "^5.3.0",
     "fullscreen-api": "^1.1.1",
     "iron-a11y-keys-behavior": "PolymerElements/iron-a11y-keys-behavior#^1.1.9",
