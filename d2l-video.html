@@ -117,7 +117,7 @@
 			}
 		</style>
 
-		<fullscreen-api id="fsApi" target="#container" fullscreen="{{ isFullscreen }}"></fullscreen-api>
+		<fullscreen-api id="fsApi" target="{{ _getFsTarget() }}" fullscreen="{{ isFullscreen }}"></fullscreen-api>
 
 		<div id="container" on-tap="_onContainerTap">
 			<video id="media" preload="{{ _getPreload(autoLoad) }}" poster="{{ poster }}" on-tap="_onVideoTap"></video>
@@ -187,6 +187,10 @@
 
 			_getFullscreenIcon: function(isFullscreen) {
 				return isFullscreen ? 'd2l-tier1:smallscreen' : 'd2l-tier1:fullscreen';
+			},
+
+			_getFsTarget: function() {
+				return this.$$('#container');
 			},
 
 			_onVideoTap: function() {
