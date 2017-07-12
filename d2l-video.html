@@ -95,7 +95,7 @@
 			}
 
 			.volume-control-container {
-			  z-index: 1;
+				z-index: 1;
 				padding: 5px 20px;
 				position: absolute;
 				bottom: 94px;
@@ -120,7 +120,7 @@
 		<fullscreen-api id="fsApi" target="{{ _getFsTarget() }}" fullscreen="{{ isFullscreen }}"></fullscreen-api>
 
 		<div id="container" on-tap="_onContainerTap">
-			<video id="media" preload="{{ _getPreload(autoLoad) }}" poster="{{ poster }}" on-tap="_onVideoTap" style$="max-height: {{maxHeight}}; max-width: {{maxWidth}}"></video>
+			<video id="media" preload="{{ _getPreload(autoLoad) }}" poster="{{ poster }}" on-tap="_onVideoTap" style="[[ _getInlineStyle(style) ]]"></video>
 
 			<template is="dom-if" if="{{ volumeControlVisible }}">
 				<div class="volume-control-container" on-mouseover="_showVolumeControlByHover" on-mouseout="_hideVolumeControlByHover">
@@ -169,13 +169,8 @@
 					type: Boolean,
 					value: false
 				},
-				maxHeight: {
-					type: String,
-					value: 'none'
-				},
-				maxWidth: {
-					type: String,
-					value: 'none'
+				style: {
+					type: String
 				}
 			},
 
@@ -188,10 +183,7 @@
 			},
 
 			attached: function() {
-				this._updateMaxSize = this._updateMaxSize.bind(this);
-				var obs = new MutationObserver(this._updateMaxSize);
-				obs.observe(this, { attributes: true, attributeOldValue: true, attributeFilter: ['style'] });
-				this._updateMaxSize();
+				this.style = null; // Trigger initial style check
 			},
 
 			_onContainerTap: function() {
@@ -229,10 +221,16 @@
 				this.volumeControlVisible = !this.volumeControlVisible;
 			},
 
-			_updateMaxSize: function() {
+			_getInlineStyle: function() {
 				var style = getComputedStyle(this);
-				this.maxHeight = style.maxHeight || 'none';
-				this.maxWidth = style.maxWidth || 'none';
+				var str = '';
+				if (style.maxWidth) {
+					str += 'max-width: ' + style.maxWidth + ';';
+				}
+				if (style.maxHeight) {
+					str += 'max-height: ' + style.maxHeight + ';';
+				}
+				return str;
 			},
 
 			_showVolumeControlByHover: function() {
