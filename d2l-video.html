@@ -120,7 +120,7 @@
 		<fullscreen-api id="fsApi" target="{{ _getFsTarget() }}" fullscreen="{{ isFullscreen }}"></fullscreen-api>
 
 		<div id="container" on-tap="_onContainerTap">
-			<video id="media" preload="{{ _getPreload(autoLoad) }}" poster="{{ poster }}" on-tap="_onVideoTap"></video>
+			<video id="media" preload="{{ _getPreload(autoLoad) }}" poster="{{ poster }}" on-tap="_onVideoTap" style$="max-height: {{maxHeight}}; max-width: {{maxWidth}}"></video>
 
 			<template is="dom-if" if="{{ volumeControlVisible }}">
 				<div class="volume-control-container" on-mouseover="_showVolumeControlByHover" on-mouseout="_hideVolumeControlByHover">
@@ -168,6 +168,14 @@
 				volumeControlVisible: {
 					type: Boolean,
 					value: false
+				},
+				maxHeight: {
+					type: String,
+					value: 'none'
+				},
+				maxWidth: {
+					type: String,
+					value: 'none'
 				}
 			},
 
@@ -177,6 +185,13 @@
 
 			keyBindings: {
 				'space': '_playPause'
+			},
+
+			attached: function() {
+				this._updateMaxSize = this._updateMaxSize.bind(this);
+				var obs = new MutationObserver(this._updateMaxSize);
+				obs.observe(this, { attributes: true, attributeOldValue: true, attributeFilter: ['style'] });
+				this._updateMaxSize();
 			},
 
 			_onContainerTap: function() {
@@ -212,6 +227,12 @@
 			_toggleVolumeControl: function(e) {
 				e.stopPropagation();
 				this.volumeControlVisible = !this.volumeControlVisible;
+			},
+
+			_updateMaxSize: function() {
+				var style = getComputedStyle(this);
+				this.maxHeight = style.maxHeight || 'none';
+				this.maxWidth = style.maxWidth || 'none';
 			},
 
 			_showVolumeControlByHover: function() {
