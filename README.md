@@ -49,6 +49,15 @@ A polymer video player component.
 
 This is useful when auto-load is not set, for supporting signed video URLs that may expire prior to the play button being pressed.
 
+## Style Properties
+
+`style (String)`: Updating the inline style will update the `max-height` and `max-width` styles of the video.
+
+- `max-height`: If set, defines the `max-height` style of the video. If not set, this will use the `max-height` defined by any applicable stylesheets.
+
+- `max-width`: If set, defines the `max-width` style of the video. If not set, this will use the `max-width` defined by any applicable stylesheets.
+
+
 ## Development
 
 * `npm install`
