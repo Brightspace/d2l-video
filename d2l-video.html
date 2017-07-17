@@ -23,6 +23,13 @@
 				width: 100%;
 				height: 100%;
 				background-color: Black;
+				max-width: inherit;
+				max-height: inherit;
+			}
+
+			fullscreen-api[fullscreen] + #container {
+				max-height: none;
+				max-width: none;
 			}
 
 			#media {
@@ -31,6 +38,8 @@
 				width: 100%;
 				min-width: 100%;
 				min-height: 100%;
+				max-width: inherit;
+				max-height: inherit;
 			}
 
 			#controlBar {
@@ -120,7 +129,7 @@
 		<fullscreen-api id="fsApi" target="{{ _getFsTarget() }}" fullscreen="{{ isFullscreen }}"></fullscreen-api>
 
 		<div id="container" on-tap="_onContainerTap">
-			<video id="media" preload="{{ _getPreload(autoLoad) }}" poster="{{ poster }}" on-tap="_onVideoTap" style="[[ _getInlineStyle(style) ]]"></video>
+			<video id="media" preload="{{ _getPreload(autoLoad) }}" poster="{{ poster }}" on-tap="_onVideoTap"></video>
 
 			<template is="dom-if" if="{{ volumeControlVisible }}">
 				<div class="volume-control-container" on-mouseover="_showVolumeControlByHover" on-mouseout="_hideVolumeControlByHover">
@@ -168,9 +177,6 @@
 				volumeControlVisible: {
 					type: Boolean,
 					value: false
-				},
-				style: {
-					type: String
 				}
 			},
 
@@ -180,10 +186,6 @@
 
 			keyBindings: {
 				'space': '_playPause'
-			},
-
-			attached: function() {
-				this.style = null; // Trigger initial style check
 			},
 
 			_onContainerTap: function() {
@@ -219,18 +221,6 @@
 			_toggleVolumeControl: function(e) {
 				e.stopPropagation();
 				this.volumeControlVisible = !this.volumeControlVisible;
-			},
-
-			_getInlineStyle: function() {
-				var style = getComputedStyle(this);
-				var str = '';
-				if (style.maxWidth) {
-					str += 'max-width: ' + style.maxWidth + ';';
-				}
-				if (style.maxHeight) {
-					str += 'max-height: ' + style.maxHeight + ';';
-				}
-				return str;
 			},
 
 			_showVolumeControlByHover: function() {
