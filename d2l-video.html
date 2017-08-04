@@ -107,8 +107,8 @@
 				z-index: 1;
 				padding: 5px 20px;
 				position: absolute;
-				bottom: 94px;
-				left: -5px;
+				bottom: 78px;
+				left: -75px;
 				transform: rotate(-90deg);
 			}
 
@@ -124,21 +124,15 @@
 			.expand {
 				cursor: pointer;
 			}
+			.volume-container {
+				position: relative;
+			}
 		</style>
 
 		<fullscreen-api id="fsApi" target="{{ _getFsTarget() }}" fullscreen="{{ isFullscreen }}"></fullscreen-api>
 
 		<div id="container" on-tap="_onContainerTap">
 			<video id="media" preload="{{ _getPreload(autoLoad) }}" poster="{{ poster }}" on-tap="_onVideoTap"></video>
-
-			<template is="dom-if" if="{{ volumeControlVisible }}">
-				<div class="volume-control-container" on-mouseover="_showVolumeControlByHover" on-mouseout="_hideVolumeControlByHover">
-					<div class="volume-control" on-tap="_onVolumeControlTap">
-						<d2l-seek-bar id="volumeBar" value="40" immediate-value="{{ rawVolume }}" vertical></d2l-seek-bar>
-					</div>
-				</div>
-			</template>
-
 			<div id="controlBar" class="layout horizontal center d2l-typography">
 				<div class="control play-pause-container">
 					<d2l-icon hidden$="{{ isPlaying }}" icon="d2l-tier3:play" on-tap="_playPause"></d2l-icon>
@@ -146,6 +140,13 @@
 				</div>
 				<div class="control volume-container" on-mouseover="_showVolumeControlByHover" on-mouseout="_hideVolumeControlByHover">
 					<d2l-icon class="control-icon" icon="d2l-tier1:volume" on-tap="_toggleVolumeControl"></d2l-icon>
+					<template is="dom-if" if="{{ volumeControlVisible }}">
+						<div class="volume-control-container" on-mouseover="_showVolumeControlByHover" on-mouseout="_hideVolumeControlByHover">
+							<div class="volume-control" on-tap="_onVolumeControlTap">
+								<d2l-seek-bar id="volumeBar" value="40" immediate-value="{{ rawVolume }}" vertical></d2l-seek-bar>
+							</div>
+						</div>
+					</template>
 				</div>
 				<div class="time control time-control-left d2l-body-compact">{{ _formatTime(currentTime) }}</div>
 				<div class="flex seek-control">
