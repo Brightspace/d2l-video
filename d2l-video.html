@@ -49,6 +49,8 @@
 				bottom: 0;
 				height: 50px;
 				background-color: rgba(0, 0, 0, 0.6);
+				box-sizing: border-box;
+				padding: 0 10px;
 				width: 100%;
 			}
 
@@ -56,20 +58,12 @@
 				margin: 10px 10px;
 			}
 
-			#controlBar .time-control-left {
-				margin-right: 5px;
-			}
-
-			#controlBar .time-control-right {
-				margin-left: 5px;
-			}
-
-			#controlBar .seek-control {
+			#controlBar .time-control {
 				margin: 0 5px;
 			}
 
-			.expand {
-				margin-right: 20px !important;
+			#controlBar .seek-control {
+				margin: 0 10px;
 			}
 
 			.control-icon {
@@ -95,26 +89,22 @@
 				--d2l-knob-box-shadow: 1px 1px 0 0 rgba(0, 0, 0, 0.4);
 			}
 
-			.time {
+			.time-control {
 				color: var(--d2l-color-white);
-			}
-
-			.play-pause-container {
-				margin-left: 20px !important;
 			}
 
 			.volume-control-container {
 				z-index: 1;
-				padding: 5px 20px;
+				padding: 5px 20px 5px 40px;
 				position: absolute;
-				bottom: 78px;
-				left: -75px;
+				bottom: 64px;
+				left: -87px;
 				transform: rotate(-90deg);
 			}
 
 			.volume-control {
 				background-color: rgba(0, 0, 0, 0.6);
-				border-radius: 8px;
+				border-radius: 0 8px 8px 0;
 				width: 120px;
 				padding: 12px 6px;
 			}
@@ -148,11 +138,13 @@
 						</div>
 					</template>
 				</div>
-				<div class="time control time-control-left d2l-body-compact">{{ _formatTime(currentTime) }}</div>
-				<div class="flex seek-control">
-					<d2l-seek-bar id="seekBar" value="[[ percentComplete ]]" immediate-value="{{ immediateValue }}" on-drag-start="_onSeekStart" on-drag-end="_onSeekEnd"></d2l-seek-bar>
+				<div class="layout horizontal center flex time-container" dir="ltr">
+					<div class="time-control time-control-left d2l-body-compact">{{ _formatTime(currentTime) }}</div>
+					<div class="flex seek-control">
+						<d2l-seek-bar id="seekBar" value="[[ percentComplete ]]" immediate-value="{{ immediateValue }}" on-drag-start="_onSeekStart" on-drag-end="_onSeekEnd"></d2l-seek-bar>
+					</div>
+					<div class="time-control time-control-right d2l-body-compact">{{ _formatTime(duration) }}</div>
 				</div>
-				<div class="time control time-control-right d2l-body-compact">{{ _formatTime(duration) }}</div>
 				<div class="expand control">
 					<d2l-icon class="control-icon" icon="[[ _getFullscreenIcon(isFullscreen) ]]" on-tap="_toggleFullscreen"></d2l-icon>
 				</div>
