@@ -2,7 +2,7 @@
 
 A Polymer video player component.
 
-![fdal](example.png)
+![Video player example image](example.png)
 
 ## Usage
 
