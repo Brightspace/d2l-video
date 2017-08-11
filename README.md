@@ -1,6 +1,8 @@
 # d2l-video
 
-A polymer video player component.
+A Polymer video player component.
+
+![Video player example image](example.png)
 
 ## Usage
 
