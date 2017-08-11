@@ -1,6 +1,8 @@
 # d2l-video
 
-A polymer video player component.
+A Polymer video player component.
+
+![fdal](example.png)
 
 ## Usage
 
