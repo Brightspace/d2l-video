@@ -39,6 +39,8 @@ A Polymer video player component.
 
 `auto-load (Boolean)`: If set, the video is loaded immediately when the component is loaded (or the `src` changes). Otherwise, the video is loaded when the play button is pressed.
 
+`autoplay (Boolean)`: If set, the video is played immediately when the component is loaded.
+
 `poster (String)`: URL to the poster image.
 
 `request-src (Boolean)`: If set, the video URL is requested from the `src` URL. The response to this request must be *JSON* in the following format:
