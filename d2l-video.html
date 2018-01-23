@@ -120,6 +120,20 @@
 			.volume-container {
 				position: relative;
 			}
+
+			.message-overlay {
+				color: var(--d2l-color-white);
+				width: 100%;
+				height: 100%;
+				display: flex;
+				position: absolute;
+				top: 0;
+				align-items: center;
+				text-align: center;
+			}
+			.message-overlay p {
+				width: 100%;
+			}
 		</style>
 
 		<fullscreen-api id="fsApi" target="{{ _getFsTarget() }}" fullscreen="{{ isFullscreen }}"></fullscreen-api>
@@ -152,6 +166,9 @@
 					<d2l-icon class="control-icon" icon="[[ _getFullscreenIcon(isFullscreen) ]]" on-tap="_toggleFullscreen"></d2l-icon>
 				</div>
 			</div>
+			<div id="message" class="message-overlay" hidden$="{{ _showMessageOverlay(mediaStatus) }}">
+				<p>{{ processingMessage }}</p>
+			</div>
 		</div>
 	</template>
 
@@ -166,6 +183,9 @@
 
 			properties: {
 				poster: String,
+				processingMessage: {
+					type: String
+				},
 				rawVolume: {
 					type: Number,
 					observer: '_rawVolumeChanged'
@@ -241,6 +261,10 @@
 				var ua = /iP(ad|hone|od)/i.test(window.navigator && window.navigator.userAgent);
 
 				return !!((ctr || srn || apy) && ua);
+			},
+
+			_showMessageOverlay: function(mediaStatus) {
+				return mediaStatus === 'ready';
 			}
 		});
 	</script>
