@@ -166,9 +166,11 @@
 					<d2l-icon class="control-icon" icon="[[ _getFullscreenIcon(isFullscreen) ]]" on-tap="_toggleFullscreen"></d2l-icon>
 				</div>
 			</div>
-			<div id="message" class="message-overlay" hidden$="{{ _showMessageOverlay(mediaStatus) }}">
-				<p>{{ processingMessage }}</p>
-			</div>
+			<template is="dom-if" if="{{ !_isMediaReady(mediaStatus) }}">
+				<div id="message" class="message-overlay">
+					<p>{{ processingMessage }}</p>
+				</div>
+			</template>
 		</div>
 	</template>
 
@@ -263,7 +265,7 @@
 				return !!((ctr || srn || apy) && ua);
 			},
 
-			_showMessageOverlay: function(mediaStatus) {
+			_isMediaReady: function(mediaStatus) {
 				return mediaStatus === 'ready';
 			}
 		});
