@@ -28,7 +28,8 @@
         "iron-iconset-svg": "^1.0.0",
         "iron-flex-layout": "^1.0.0",
         "iron-a11y-keys-behavior": "^1.0.0",
-        "polymer": "^1.9.0"
+        "polymer": "^1.9.0",
+        "webcomponentsjs": "^0.7.24"
       }
     }
   },
@@ -53,6 +54,7 @@
     "iron-iconset-svg": "^2.1.0",
     "iron-flex-layout": "^2.0.3",
     "iron-a11y-keys-behavior": "^2.1.0",
-    "polymer": "1 - 2"
+    "polymer": "^2.6.0",
+    "webcomponentsjs": "^1.1.1"
   }
 }
