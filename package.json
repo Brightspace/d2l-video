@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "Polymer video player component",
   "scripts": {
-    "lint": "eslint *.html && polymerlink",
+    "lint": "eslint *.html && polymer lint",
     "postinstall": "polymer install --variants",
     "start": "polymer serve",
     "test": "polymer test -l chrome",
