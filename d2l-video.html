@@ -10,6 +10,10 @@
 <link rel="import" href="../d2l-typography/d2l-typography.html">
 <link rel="import" href="../fullscreen-api/fullscreen-api.html">
 
+<!--
+@demo demo/index.html
+-->
+
 <dom-module id="d2l-video">
 	<template strip-whitespace>
 		<style is="custom-style" include="iron-flex iron-flex-alignment d2l-typography">
@@ -175,11 +179,13 @@
 	</template>
 
 	<script>
+		window.D2L = window.D2L || {};
+		window.D2L.MediaBehavior = window.D2L.MediaBehavior || window.D2LMediaBehavior;
 		Polymer({
 			is: 'd2l-video',
 
 			behaviors: [
-				D2LMediaBehavior,
+				window.D2L.MediaBehavior,
 				Polymer.IronA11yKeysBehavior
 			],
 
