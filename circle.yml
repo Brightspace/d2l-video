@@ -1,6 +1,6 @@
 machine:
   node:
-    version: 10.0.0
+    version: 9.11.1
   java:
     version: openjdk8
 
