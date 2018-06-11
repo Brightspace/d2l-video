@@ -1,8 +1,8 @@
 version: 2
 
 jobs:
-	build:
-		docker:
+  build:
+    docker:
 			- image: circleci/node:latest-browsers
 
 		steps:
@@ -38,7 +38,7 @@ workflows:
 			- build
 
 			- publish:
-					requires:
+				  requires:
 						- build
 
 					filters:
