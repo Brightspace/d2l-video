@@ -3,46 +3,46 @@ version: 2
 jobs:
   build:
     docker:
-			- image: circleci/node:latest-browsers
+      - image: circleci/node:latest-browsers
 
-		steps:
-			- checkout
+    steps:
+      - checkout
 
-			- restore_cache:
-					keys:
-						- v1-{{ checksum "package.json" }}
-						- v1-
+      - restore_cache:
+          keys:
+            - v1-{{ checksum "package.json" }}
+            - v1-
 
-			- run: npm install
-			- run: npm test
+      - run: npm install
+      - run: npm test
 
-			- save_cache:
-					paths:
-						- node_modules
-					key: v1-{{ checksum "package.json" }}
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-{{ checksum "package.json" }}
 
-	publish:
-		machine: true
+  publish:
+    machine: true
 
-		steps:
-			- checkout
+    steps:
+      - checkout
 
-			- run: npm install -g artifactory-bower-publisher
-			- run: artifactory-bower-publisher -u $ARTIFACTORY_USER -p $ARTIFACTORY_PASS -a https://d2lartifacts.artifactoryonline.com/d2lartifacts/simple/bower-local/polymer -n d2l-video
+      - run: npm install -g artifactory-bower-publisher
+      - run: artifactory-bower-publisher -u $ARTIFACTORY_USER -p $ARTIFACTORY_PASS -a https://d2lartifacts.artifactoryonline.com/d2lartifacts/simple/bower-local/polymer -n d2l-video
 
 workflows:
-	version: 2
+  version: 2
 
-	build-and-publish:
-		jobs:
-			- build
+  build-and-publish:
+    jobs:
+      - build
 
-			- publish:
-				  requires:
-						- build
+      - publish:
+          requires:
+            - build
 
-					filters:
-						branches:
-							only:
-								- master
-								- /^release.*/
+          filters:
+            branches:
+              only:
+                - master
+                - /^release.*/
