@@ -24,8 +24,8 @@ jobs:
 
     steps:
       - checkout
-      - run: sudo npm install -g artifactory-bower-publisher
-      - run: artifactory-bower-publisher -u $ARTIFACTORY_USER -p $ARTIFACTORY_PASS -a https://d2lartifacts.artifactoryonline.com/d2lartifacts/simple/bower-local/polymer -n d2l-video
+      - run: npm install artifactory-bower-publisher
+      - run: ./node_modules/.bin/artifactory-bower-publisher -u $ARTIFACTORY_USER -p $ARTIFACTORY_PASS -a https://d2lartifacts.artifactoryonline.com/d2lartifacts/simple/bower-local/polymer -n d2l-video
 
 workflows:
   version: 2
