@@ -7,27 +7,24 @@ jobs:
 
     steps:
       - checkout
-
       - restore_cache:
           keys:
             - v1-{{ checksum "package.json" }}
             - v1-
-
       - run: npm install
       - run: npm test
-
       - save_cache:
           paths:
             - node_modules
           key: v1-{{ checksum "package.json" }}
 
   publish:
-    machine: true
+    docker:
+      - image: circleci/node:8.11-browsers
 
     steps:
       - checkout
-
-      - run: npm install -g artifactory-bower-publisher
+      - run: sudo npm install -g artifactory-bower-publisher
       - run: artifactory-bower-publisher -u $ARTIFACTORY_USER -p $ARTIFACTORY_PASS -a https://d2lartifacts.artifactoryonline.com/d2lartifacts/simple/bower-local/polymer -n d2l-video
 
 workflows:
@@ -36,13 +33,6 @@ workflows:
   build-and-publish:
     jobs:
       - build
-
       - publish:
           requires:
             - build
-
-          filters:
-            branches:
-              only:
-                - master
-                - /^release.*/
