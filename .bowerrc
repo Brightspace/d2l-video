@@ -2,7 +2,7 @@
 	"registry": {
 		"search": [
 			"https://ro-dev:AP3hK9qVHxhdvdFwPeGMw2bj5eWeuDJZuRCdBB@d2lartifacts.artifactoryonline.com/d2lartifacts/api/bower/bower-local",
-			"https://bower.herokuapp.com"
+			"https://registry.bower.io"
   		]
 	},
 	"resolvers": [
