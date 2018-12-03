@@ -6,8 +6,8 @@
 
 		<title>d2l-video test</title>
 
-		<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
-		<script src="../../web-component-tester/browser.js"></script>
+		<script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
+		<script src="../node_modules/wct-browser-legacy/browser.js"></script>
 
 		<script type="module" src="../d2l-video.js"></script>
 	</head>
@@ -19,13 +19,13 @@
 		</test-fixture>
 
 		<script type="module">
-import '../d2l-video.js';
-suite('d2l-video', function() {
-	test('instantiating the element works', function() {
-		var element = fixture('basic');
-		assert.equal(element.is, 'd2l-video');
-	});
-});
-</script>
+			import '../d2l-video.js';
+			suite('d2l-video', function() {
+				test('instantiating the element works', function() {
+					var element = fixture('basic');
+					assert.equal(element.is, 'd2l-video');
+				});
+			});
+		</script>
 	</body>
 </html>

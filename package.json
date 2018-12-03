@@ -9,6 +9,8 @@
   "version": "0.0.1",
   "scripts": {
     "lint": "npm run lint:wc && npm run lint:js",
+    "lint:js": "eslint . --ext .js,.html test/**/*.js test/**/*.html demo/**/*.js demo/**/*.html",
+    "lint:wc": "polymer lint",
     "start": "polymer serve",
     "test": "polymer test -l chrome",
     "posttest": "npm run lint"
@@ -20,11 +22,9 @@
     "@polymer/iron-component-page": "^3.0.0-pre.18",
     "@webcomponents/webcomponentsjs": "^2.2.1",
     "babel-eslint": "^10.0.1",
-    "bower": "^1.8.2",
-    "bower-art-resolver": "^2.0.9",
-    "eslint": "^3.19.0",
-    "eslint-config-brightspace": "^0.2.4",
-    "eslint-plugin-html": "^1.7.0",
+    "eslint": "^4.15.0",
+    "eslint-config-brightspace": "^0.4.0",
+    "eslint-plugin-html": "^4.0.1",
     "polymer-cli": "^1.9.1",
     "wct-browser-legacy": "^1.0.1"
   },
@@ -40,6 +40,7 @@
     "@d2l/media-behavior": "^1.0.1",
     "@d2l/seek-bar": "^1.0.0",
     "d2l-typography": "BrightspaceUI/typography#semver:^7.0.1",
+    "fullscreen-api": "Brightspace/fullscreen-api#semver:^3.0.0",
     "@polymer/iron-a11y-keys-behavior": "^3.0.0-pre.18",
     "@polymer/iron-flex-layout": "^3.0.0-pre.18",
     "@polymer/iron-range-behavior": "^3.0.0-pre.18",

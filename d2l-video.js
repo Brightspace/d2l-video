@@ -1,11 +1,19 @@
 /**
 @demo demo/index.html
 */
-/*
-  FIXME(polymer-modulizer): the above comments were extracted
-  from HTML and may be out of place here. Review them and
-  then delete this comment!
-*/
+import '@polymer/polymer/polymer-legacy.js';
+
+import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
+import { IronA11yKeysBehavior } from '@polymer/iron-a11y-keys-behavior/iron-a11y-keys-behavior.js';
+import '@polymer/iron-flex-layout/iron-flex-layout-classes.js';
+import 'd2l-icons/d2l-icons.js';
+import 'd2l-icons/tier1-icons.js';
+import 'd2l-icons/tier3-icons.js';
+import 'd2l-typography/d2l-typography.js';
+import '@d2l/media-behavior/d2l-media-behavior.js';
+import '@d2l/seek-bar/d2l-seek-bar.js';
+import 'fullscreen-api/fullscreen-api.js';
+
 const $_documentContainer = document.createElement('template');
 
 $_documentContainer.innerHTML = `<dom-module id="d2l-video">
@@ -171,9 +179,6 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 			</template>
 		</div>
 	</template>
-
-	
-
 </dom-module>`;
 
 document.head.appendChild($_documentContainer.content);
@@ -184,7 +189,7 @@ Polymer({
 
 	behaviors: [
 		window.D2L.MediaBehavior,
-		Polymer.IronA11yKeysBehavior
+		IronA11yKeysBehavior
 	],
 
 	properties: {
