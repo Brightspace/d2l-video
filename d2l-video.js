@@ -183,9 +183,6 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 			</template>
 		</div>
 	</template>
-
-	
-
 </dom-module>`;
 
 document.head.appendChild($_documentContainer.content);
