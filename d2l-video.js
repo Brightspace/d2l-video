@@ -1,20 +1,27 @@
-<link rel="import" href="../polymer/polymer.html">
-<link rel="import" href="../iron-a11y-keys-behavior/iron-a11y-keys-behavior.html">
-<link rel="import" href="../iron-flex-layout/iron-flex-layout-classes.html">
-<link rel="import" href="../d2l-icons/d2l-icon.html">
-<link rel="import" href="../d2l-icons/tier1-icons.html">
-<link rel="import" href="../d2l-icons/tier3-icons.html">
-<link rel="import" href="../d2l-media-behavior/d2l-media-behavior.html">
-<link rel="import" href="../d2l-seek-bar/d2l-seek-bar.html">
-<link rel="import" href="../d2l-typography/d2l-typography.html">
-<link rel="import" href="../fullscreen-api/fullscreen-api.html">
-
-<!--
+/**
 @demo demo/index.html
--->
+*/
+/*
+  FIXME(polymer-modulizer): the above comments were extracted
+  from HTML and may be out of place here. Review them and
+  then delete this comment!
+*/
+import '@polymer/polymer/polymer-legacy.js';
 
-<dom-module id="d2l-video">
-	<template strip-whitespace>
+import { IronA11yKeysBehavior } from '@polymer/iron-a11y-keys-behavior/iron-a11y-keys-behavior.js';
+import '@polymer/iron-flex-layout/iron-flex-layout-classes.js';
+import 'd2l-icons/d2l-icon.js';
+import 'd2l-icons/tier1-icons.js';
+import 'd2l-icons/tier3-icons.js';
+import '@d2l/media-behavior/d2l-media-behavior.js';
+import '@d2l/seek-bar/d2l-seek-bar.js';
+import 'd2l-typography/d2l-typography.js';
+import 'fullscreen-api/fullscreen-api.js';
+import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
+const $_documentContainer = document.createElement('template');
+
+$_documentContainer.innerHTML = `<dom-module id="d2l-video">
+	<template strip-whitespace="">
 		<style is="custom-style" include="iron-flex iron-flex-alignment d2l-typography">
 			:host {
 				display: inline-block;
@@ -153,7 +160,7 @@
 					<template is="dom-if" if="{{ volumeControlVisible }}">
 						<div class="volume-control-container" on-mouseover="_showVolumeControlByHover" on-mouseout="_hideVolumeControlByHover">
 							<div class="volume-control" on-tap="_onVolumeControlTap">
-								<d2l-seek-bar id="volumeBar" value="40" immediate-value="{{ rawVolume }}" vertical></d2l-seek-bar>
+								<d2l-seek-bar id="volumeBar" value="40" immediate-value="{{ rawVolume }}" vertical=""></d2l-seek-bar>
 							</div>
 						</div>
 					</template>
@@ -177,103 +184,104 @@
 		</div>
 	</template>
 
-	<script>
-		window.D2L = window.D2L || {};
-		window.D2L.MediaBehavior = window.D2L.MediaBehavior || window.D2LMediaBehavior;
-		Polymer({
-			is: 'd2l-video',
+	
 
-			behaviors: [
-				window.D2L.MediaBehavior,
-				Polymer.IronA11yKeysBehavior
-			],
+</dom-module>`;
 
-			properties: {
-				poster: String,
-				processingMessage: {
-					type: String
-				},
-				rawVolume: {
-					type: Number,
-					observer: '_rawVolumeChanged'
-				},
-				volumeControlVisible: {
-					type: Boolean,
-					value: false
-				}
-			},
+document.head.appendChild($_documentContainer.content);
+window.D2L = window.D2L || {};
+window.D2L.MediaBehavior = window.D2L.MediaBehavior || window.D2LMediaBehavior;
+Polymer({
+	is: 'd2l-video',
 
-			hostAttributes: {
-				tabindex: 0
-			},
+	behaviors: [
+		window.D2L.MediaBehavior,
+		IronA11yKeysBehavior
+	],
 
-			keyBindings: {
-				'space': '_playPause'
-			},
+	properties: {
+		poster: String,
+		processingMessage: {
+			type: String
+		},
+		rawVolume: {
+			type: Number,
+			observer: '_rawVolumeChanged'
+		},
+		volumeControlVisible: {
+			type: Boolean,
+			value: false
+		}
+	},
 
-			_onContainerTap: function() {
-				if (this.volumeControlVisible) {
-					this.volumeControlVisible = false;
-				}
-			},
+	hostAttributes: {
+		tabindex: 0
+	},
 
-			_getFullscreenIcon: function(isFullscreen) {
-				return isFullscreen ? 'd2l-tier1:smallscreen' : 'd2l-tier1:fullscreen';
-			},
+	keyBindings: {
+		'space': '_playPause'
+	},
 
-			_getFsTarget: function() {
-				return this.$$('#container');
-			},
+	_onContainerTap: function() {
+		if (this.volumeControlVisible) {
+			this.volumeControlVisible = false;
+		}
+	},
 
-			_onVideoTap: function() {
-				this._playPause();
-			},
+	_getFullscreenIcon: function(isFullscreen) {
+		return isFullscreen ? 'd2l-tier1:smallscreen' : 'd2l-tier1:fullscreen';
+	},
 
-			_onVolumeControlTap: function(e) {
-				e.stopPropagation();
-			},
+	_getFsTarget: function() {
+		return this.$$('#container');
+	},
 
-			_rawVolumeChanged: function(rawVolume) {
-				this.volume = rawVolume / 100;
-			},
+	_onVideoTap: function() {
+		this._playPause();
+	},
 
-			_toggleFullscreen: function() {
-				this.$.fsApi.toggleFullscreen();
-			},
+	_onVolumeControlTap: function(e) {
+		e.stopPropagation();
+	},
 
-			_toggleVolumeControl: function(e) {
-				e.stopPropagation();
-				this.volumeControlVisible = !this.volumeControlVisible;
-			},
+	_rawVolumeChanged: function(rawVolume) {
+		this.volume = rawVolume / 100;
+	},
 
-			_showVolumeControlByHover: function() {
-				this.volumeControlVisible = true;
-			},
+	_toggleFullscreen: function() {
+		this.$.fsApi.toggleFullscreen();
+	},
 
-			_hideVolumeControlByHover: function() {
-				this.volumeControlVisible = false;
-			},
+	_toggleVolumeControl: function(e) {
+		e.stopPropagation();
+		this.volumeControlVisible = !this.volumeControlVisible;
+	},
 
-			_isMobileSafari: function() {
-				// iOS Safari 3.0 - 9.1 from https://stackoverflow.com/questions/9847580/how-to-detect-safari-chrome-ie-firefox-and-opera-browser
-				var ctr = /constructor/i.test(window.HTMLElement);
-				var srn = (function(p) {
-					return p.toString() === '[object SafariRemoteNotification]';
-				})(!window.safari || (typeof window.safari !== 'undefined' && window.safari.pushNotification));
+	_showVolumeControlByHover: function() {
+		this.volumeControlVisible = true;
+	},
 
-				// Apple Pay detection (added in iOS 10+) and exclusively for Safari
-				var apy = window.ApplePaySession;
+	_hideVolumeControlByHover: function() {
+		this.volumeControlVisible = false;
+	},
 
-				// Mobile only
-				var ua = /iP(ad|hone|od)/i.test(window.navigator && window.navigator.userAgent);
+	_isMobileSafari: function() {
+		// iOS Safari 3.0 - 9.1 from https://stackoverflow.com/questions/9847580/how-to-detect-safari-chrome-ie-firefox-and-opera-browser
+		var ctr = /constructor/i.test(window.HTMLElement);
+		var srn = (function(p) {
+			return p.toString() === '[object SafariRemoteNotification]';
+		})(!window.safari || (typeof window.safari !== 'undefined' && window.safari.pushNotification));
 
-				return !!((ctr || srn || apy) && ua);
-			},
+		// Apple Pay detection (added in iOS 10+) and exclusively for Safari
+		var apy = window.ApplePaySession;
 
-			_isMediaReady: function(mediaStatus) {
-				return mediaStatus === 'ready';
-			}
-		});
-	</script>
+		// Mobile only
+		var ua = /iP(ad|hone|od)/i.test(window.navigator && window.navigator.userAgent);
 
-</dom-module>
+		return !!((ctr || srn || apy) && ua);
+	},
+
+	_isMediaReady: function(mediaStatus) {
+		return mediaStatus === 'ready';
+	}
+});
