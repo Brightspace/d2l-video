@@ -7,14 +7,11 @@
 				height: 360px;
 			}
 		</style>
-    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
-    <script>
-      /*
-      window.Polymer = window.Polymer || {};
-      window.Polymer.dom = 'shadow';
-      */
-    </script>
-    <link rel="import" href="../d2l-video.html">
+		<script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
+		<script type="module">
+			import '../d2l-video.js';
+		</script>
+		<script type="module" src="../d2l-video.js"></script>
   </head>
   <body>
 		<d2l-video id="video1" src="http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4" poster="./poster.png" auto-load></d2l-video>
