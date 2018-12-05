@@ -6,10 +6,11 @@
 
 		<title>d2l-video test</title>
 
-		<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
-		<script src="../../web-component-tester/browser.js"></script>
+		<script src="../node_modules/@babel/polyfill/browser.js"></script>
+		<script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
+		<script src="../node_modules/wct-browser-legacy/browser.js"></script>
 
-		<link rel="import" href="../d2l-video.html">
+		<script type="module" src="../d2l-video.js"></script>
 	</head>
 	<body>
 		<test-fixture id="basic">
@@ -18,7 +19,8 @@
 			</template>
 		</test-fixture>
 
-		<script>
+		<script type="module">
+			import '../d2l-video.js';
 			suite('d2l-video', function() {
 				test('instantiating the element works', function() {
 					var element = fixture('basic');
