@@ -6,7 +6,7 @@
   },
   "homepage": "https://github.com/Brightspace/d2l-video",
   "name": "@d2l/video",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "scripts": {
     "lint": "npm run lint:wc && npm run lint:js",
     "lint:js": "eslint . --ext .js,.html test/**/*.js test/**/*.html demo/**/*.js demo/**/*.html",
@@ -35,12 +35,12 @@
     "type-detect": "1.0.0"
   },
   "dependencies": {
-    "d2l-colors": "BrightspaceUI/colors#semver:^4.0.0",
-    "d2l-icons": "BrightspaceUI/icons#semver:^6.0.0",
+    "d2l-colors": "BrightspaceUI/colors#semver:^4",
+    "d2l-icons": "BrightspaceUI/icons#semver:^6",
     "@d2l/media-behavior": "^1.0.1",
     "@d2l/seek-bar": "^1.0.0",
-    "d2l-typography": "BrightspaceUI/typography#semver:^7.0.1",
-    "fullscreen-api": "Brightspace/fullscreen-api#semver:^3.0.0",
+    "d2l-typography": "BrightspaceUI/typography#semver:^7",
+    "fullscreen-api": "Brightspace/fullscreen-api#semver:^3",
     "@polymer/iron-a11y-keys-behavior": "^3.0.0-pre.18",
     "@polymer/iron-flex-layout": "^3.0.0-pre.18",
     "@polymer/iron-range-behavior": "^3.0.0-pre.18",
