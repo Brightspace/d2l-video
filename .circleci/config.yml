@@ -33,6 +33,9 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/project
+      - run:
+          name: Authenticate with Artifactory
+          command: curl -ks -u$ARTIFACTORY_USER:$ARTIFACTORY_PASS "https://d2lartifacts.artifactoryonline.com/d2lartifacts/api/npm/npm-local/auth/d2l" -o ~/project/.npmrc
       - run: sudo npm install -g publish
       - run: publish
 
