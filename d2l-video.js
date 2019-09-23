@@ -18,6 +18,7 @@ import '@d2l/seek-bar/d2l-seek-bar.js';
 import 'd2l-typography/d2l-typography.js';
 import 'fullscreen-api/fullscreen-api.js';
 import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
+import './localize-behavior.js';
 const $_documentContainer = document.createElement('template');
 
 $_documentContainer.innerHTML = `<dom-module id="d2l-video">
@@ -122,11 +123,23 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 				padding: 12px 6px;
 			}
 
-			.play-pause-container,
-			.volume-container,
-			.expand {
+			button {
 				cursor: pointer;
+				margin: 0;
+				padding: 2px;
+				background: none;
+				border: none;
 			}
+
+			button:hover {
+				background: var(--d2l-color-galena);
+			}
+
+			button:focus {
+				background: var(--d2l-color-galena);
+				border: 2px solid var(--d2l-color-celestine);
+			}
+
 			.volume-container {
 				position: relative;
 			}
@@ -149,16 +162,16 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 		<fullscreen-api id="fsApi" target="{{ _getFsTarget() }}" fullscreen="{{ isFullscreen }}"></fullscreen-api>
 
 		<div id="container" on-tap="_onContainerTap">
-			<video id="media" controls$="{{ _isMobileSafari() }}" preload="{{ _getPreload(autoLoad) }}" poster="{{ poster }}" on-tap="_onVideoTap" autoplay="{{ _getAutoplay(autoplay) }}"></video>
+			<video id="media" controls$="{{ _isMobileSafari() }}" preload="{{ _getPreload(autoLoad) }}" poster="{{ poster }}" on-tap="_onVideoTap" autoplay="{{ _getAutoplay(autoplay) }}" aria-label$="[[localize('VideoPlayer')]]"></video>
 			<div id="controlBar" hidden$="{{ _isMobileSafari() }}" class="layout horizontal center d2l-typography">
 				<div class="control play-pause-container">
-					<d2l-icon hidden$="{{ isPlaying }}" icon="d2l-tier3:play" on-tap="_playPause"></d2l-icon>
-					<d2l-icon hidden$="{{ !isPlaying }}" icon="d2l-tier3:pause" on-tap="_playPause"></d2l-icon>
+					<button hidden$="{{ isPlaying }}" on-tap="_playPause" aria-label$="[[localize('Play')]]"><d2l-icon icon="d2l-tier3:play"></d2l-icon></button>
+					<button hidden$="{{ !isPlaying }}" on-tap="_playPause" aria-label$="[[localize('Pause')]]"><d2l-icon icon="d2l-tier3:pause"></d2l-icon></button>
 				</div>
 				<div class="control volume-container" on-mouseover="_showVolumeControlByHover" on-mouseout="_hideVolumeControlByHover">
-					<d2l-icon class="control-icon" icon="d2l-tier1:volume" on-tap="_toggleVolumeControl"></d2l-icon>
+					<button aria-label$="[[localize('Volume')]]" on-focus="_showVolumeControlByHover" on-tap="_toggleVolumeControl"><d2l-icon class="control-icon" icon="d2l-tier1:volume"></d2l-icon></button>
 					<template is="dom-if" if="{{ volumeControlVisible }}">
-						<div class="volume-control-container" on-mouseover="_showVolumeControlByHover" on-mouseout="_hideVolumeControlByHover">
+						<div class="volume-control-container" on-mouseover="_showVolumeControlByHover" on-mouseout="_hideVolumeControlByHover" >
 							<div class="volume-control" on-tap="_onVolumeControlTap">
 								<d2l-seek-bar id="volumeBar" value="40" immediate-value="{{ rawVolume }}" vertical=""></d2l-seek-bar>
 							</div>
@@ -173,7 +186,7 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 					<div class="time-control time-control-right d2l-body-compact">{{ _formatTime(duration) }}</div>
 				</div>
 				<div class="expand control">
-					<d2l-icon class="control-icon" icon="[[ _getFullscreenIcon(isFullscreen) ]]" on-tap="_toggleFullscreen"></d2l-icon>
+					<button aria-label="Fullscreen" on-tap="_toggleFullscreen"><d2l-icon class="control-icon" icon="[[ _getFullscreenIcon(isFullscreen) ]]"></d2l-icon></button>
 				</div>
 			</div>
 			<template is="dom-if" if="{{ !_isMediaReady(mediaStatus) }}">
@@ -193,7 +206,8 @@ Polymer({
 
 	behaviors: [
 		window.D2L.MediaBehavior,
-		IronA11yKeysBehavior
+		IronA11yKeysBehavior,
+		D2L.PolymerBehaviors.D2LVideo.LocalizeBehavior
 	],
 
 	properties: {
@@ -212,11 +226,12 @@ Polymer({
 	},
 
 	hostAttributes: {
-		tabindex: 0
+		tabindex: 0,
 	},
 
 	keyBindings: {
-		'space': '_playPause'
+		'space': '_playPause',
+		'f': '_toggleFullscreen'
 	},
 
 	_onContainerTap: function() {

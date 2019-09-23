@@ -41,8 +41,10 @@
     "@polymer/iron-flex-layout": "^3.0.0-pre.18",
     "@polymer/iron-range-behavior": "^3.0.0-pre.18",
     "@polymer/polymer": "^3.0.0",
+    "d2l-button": "BrightspaceUI/button#semver:^5",
     "d2l-colors": "BrightspaceUI/colors#semver:^4",
     "d2l-icons": "BrightspaceUI/icons#semver:^6",
+    "d2l-localize-behavior": "BrightspaceUI/localize-behavior#semver:^2",
     "d2l-typography": "BrightspaceUI/typography#semver:^7",
     "fullscreen-api": "Brightspace/fullscreen-api#semver:^3"
   }
