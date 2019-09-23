@@ -9,5 +9,5 @@ window.D2L.PolymerBehaviors.D2LVideo.LangTerms.en = {
 	"Play": "Play",
 	"Pause": "Pause",
 	"Fullscreen": "Fullscreen",
-	"Video Player": "Video Player",
+	"VideoPlayer": "Video Player",
 };
