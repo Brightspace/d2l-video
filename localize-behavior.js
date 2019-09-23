@@ -31,7 +31,6 @@ D2L.PolymerBehaviors.D2LVideo.LocalizeBehaviorImpl = {
 		 */
 		resources: {
 			value: function() {
-				console.log(window.D2L.PolymerBehaviors.D2LVideo.LangTerms);
 				return window.D2L.PolymerBehaviors.D2LVideo.LangTerms;
 			}
 		}

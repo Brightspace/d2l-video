@@ -162,7 +162,7 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 		<fullscreen-api id="fsApi" target="{{ _getFsTarget() }}" fullscreen="{{ isFullscreen }}"></fullscreen-api>
 
 		<div id="container" on-tap="_onContainerTap">
-			<video id="media" controls$="{{ _isMobileSafari() }}" preload="{{ _getPreload(autoLoad) }}" poster="{{ poster }}" on-tap="_onVideoTap" autoplay="{{ _getAutoplay(autoplay) }}" aria-label="Video Player"></video>
+			<video id="media" controls$="{{ _isMobileSafari() }}" preload="{{ _getPreload(autoLoad) }}" poster="{{ poster }}" on-tap="_onVideoTap" autoplay="{{ _getAutoplay(autoplay) }}" aria-label$="[[localize('Video Player')]]"></video>
 			<div id="controlBar" hidden$="{{ _isMobileSafari() }}" class="layout horizontal center d2l-typography">
 				<div class="control play-pause-container">
 					<button hidden$="{{ isPlaying }}" on-tap="_playPause" aria-label$="[[localize('Play')]]"><d2l-icon icon="d2l-tier3:play"></d2l-icon></button>
