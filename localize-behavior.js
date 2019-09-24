@@ -21,7 +21,7 @@ window.D2L.PolymerBehaviors = window.D2L.PolymerBehaviors || {};
 window.D2L.PolymerBehaviors.D2LVideo = window.D2L.PolymerBehaviors.D2LVideo || {};
 window.D2L.PolymerBehaviors.D2LVideo.LangTerms = window.D2L.PolymerBehaviors.D2LVideo.LangTerms || {};
 /**
- * Localizes d2l-evidence-tile
+ * Localizes d2l-video
  * @polymerBehavior
  */
 D2L.PolymerBehaviors.D2LVideo.LocalizeBehaviorImpl = {
