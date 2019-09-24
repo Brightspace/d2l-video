@@ -186,7 +186,7 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 					<div class="time-control time-control-right d2l-body-compact">{{ _formatTime(duration) }}</div>
 				</div>
 				<div class="expand control">
-					<button aria-label="Fullscreen" on-tap="_toggleFullscreen"><d2l-icon class="control-icon" icon="[[ _getFullscreenIcon(isFullscreen) ]]"></d2l-icon></button>
+					<button aria-label$="[[localize('Fullscreen')]]" on-tap="_toggleFullscreen"><d2l-icon class="control-icon" icon="[[ _getFullscreenIcon(isFullscreen) ]]"></d2l-icon></button>
 				</div>
 			</div>
 			<template is="dom-if" if="{{ !_isMediaReady(mediaStatus) }}">
@@ -226,7 +226,7 @@ Polymer({
 	},
 
 	hostAttributes: {
-		tabindex: 0,
+		tabindex: 0
 	},
 
 	keyBindings: {
