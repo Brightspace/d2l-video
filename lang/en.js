@@ -10,4 +10,6 @@ window.D2L.PolymerBehaviors.D2LVideo.LangTerms.en = {
 	"Pause": "Pause",
 	"Fullscreen": "Fullscreen",
 	"VideoPlayer": "Video Player",
+	"VolumeBar": "Volume Bar",
+	"SeekBar": "Seek Bar"
 };
