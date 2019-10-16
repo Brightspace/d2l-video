@@ -33,7 +33,7 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 			#container {
 				width: 100%;
 				height: 100%;
-				background-color: Black;
+				background-color: black;
 				max-width: inherit;
 				max-height: inherit;
 			}
@@ -85,7 +85,8 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 			}
 
 			d2l-icon {
-				color: White;
+				color: white;
+				padding: 2px;
 			}
 
 			d2l-icon[hidden] {
@@ -111,7 +112,7 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 				z-index: 1;
 				padding: 5px 20px 5px 40px;
 				position: absolute;
-				bottom: 64px;
+				bottom: 69px;
 				left: -87px;
 				transform: rotate(-90deg);
 			}
@@ -131,13 +132,23 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 				border: none;
 			}
 
-			button:hover {
-				background: var(--d2l-color-galena);
+			button:hover d2l-icon {
+				color: black;
+				background: var(--d2l-color-regolith);
 			}
 
-			button:focus {
-				background: var(--d2l-color-galena);
-				border: 2px solid var(--d2l-color-celestine);
+			button:focus d2l-icon{
+				background: var(--d2l-color-regolith);
+				outline: 2px solid var(--d2l-color-celestine);
+				color: white;
+			}
+
+			d2l-seek-bar {
+				padding: 2px;
+			}
+
+			d2l-seek-bar:focus {
+				outline: 2px solid var(--d2l-color-celestine);
 			}
 
 			.volume-container {
@@ -173,7 +184,7 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 					<template is="dom-if" if="{{ volumeControlVisible }}">
 						<div class="volume-control-container" on-mouseover="_showVolumeControlByHover" on-mouseout="_hideVolumeControlByHover" >
 							<div class="volume-control" on-tap="_onVolumeControlTap">
-								<d2l-seek-bar id="volumeBar" value="40" immediate-value="{{ rawVolume }}" vertical=""></d2l-seek-bar>
+								<d2l-seek-bar id="volumeBar" value="40" immediate-value="{{ rawVolume }}" vertical="" aria-label$="[[localize('VolumeBar')]]"></d2l-seek-bar>
 							</div>
 						</div>
 					</template>
@@ -181,7 +192,7 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 				<div class="layout horizontal center flex time-container" dir="ltr">
 					<div class="time-control time-control-left d2l-body-compact">{{ _formatTime(currentTime) }}</div>
 					<div class="flex seek-control">
-						<d2l-seek-bar id="seekBar" value="[[ percentComplete ]]" immediate-value="{{ immediateValue }}" on-drag-start="_onSeekStart" on-drag-end="_onSeekEnd"></d2l-seek-bar>
+						<d2l-seek-bar id="seekBar" value="[[ percentComplete ]]" immediate-value="{{ immediateValue }}" aria-label$="[[localize('SeekBar')]]" on-drag-start="_onSeekStart" on-drag-end="_onSeekEnd" on-position-change="_onPositionChange"></d2l-seek-bar>
 					</div>
 					<div class="time-control time-control-right d2l-body-compact">{{ _formatTime(duration) }}</div>
 				</div>
