@@ -33,7 +33,7 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 			#container {
 				width: 100%;
 				height: 100%;
-				background-color: Black;
+				background-color: black;
 				max-width: inherit;
 				max-height: inherit;
 			}
@@ -85,7 +85,7 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 			}
 
 			d2l-icon {
-				color: White;
+				color: white;
 				padding: 2px;
 			}
 
@@ -133,14 +133,14 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 			}
 
 			button:hover d2l-icon {
-				color: Black;
+				color: black;
 				background: var(--d2l-color-regolith);
 			}
 
 			button:focus d2l-icon{
 				background: var(--d2l-color-regolith);
 				outline: 2px solid var(--d2l-color-celestine);
-				color: Black;
+				color: white;
 			}
 
 			d2l-seek-bar {
