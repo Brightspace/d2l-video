@@ -140,15 +140,7 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 			button:focus d2l-icon{
 				background: var(--d2l-color-regolith);
 				outline: 2px solid var(--d2l-color-celestine);
-				color: white;
-			}
-
-			d2l-seek-bar {
-				padding: 2px;
-			}
-
-			d2l-seek-bar:focus {
-				outline: 2px solid var(--d2l-color-celestine);
+				color: black;
 			}
 
 			.volume-container {
