@@ -164,7 +164,7 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 
 		<fullscreen-api id="fsApi" target="{{ _getFsTarget() }}" fullscreen="{{ isFullscreen }}"></fullscreen-api>
 
-		<div id="container" on-tap="_onContainerTap" role="application">
+		<div id="container" on-tap="_onContainerTap">
 			<video id="media" controls$="{{ _isMobileSafari() }}" preload="{{ _getPreload(autoLoad) }}" poster="{{ poster }}" on-tap="_onVideoTap" autoplay="{{ _getAutoplay(autoplay) }}" aria-label$="[[localize('VideoPlayer')]]"></video>
 			<div id="controlBar" hidden$="{{ _isMobileSafari() }}" class="layout horizontal center d2l-typography">
 				<div class="control play-pause-container">
