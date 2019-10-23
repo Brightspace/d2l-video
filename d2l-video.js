@@ -178,7 +178,7 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 						<div class="volume-control-container" on-mouseover="_showVolumeControlByHover" on-mouseout="_hideVolumeControlByHover" >
 							<div class="volume-control" on-tap="_onVolumeControlTap">
 								<d2l-seek-bar id="volumeBar" value="40" immediate-value="{{ rawVolume }}" vertical="" aria-label$="[[localize('VolumeBar')]]"></d2l-seek-bar>
-								<d2l-offscreen aria-live="assertive">Volume {{ rawVolume }}</d2l-offscreen>
+								<d2l-offscreen aria-live="assertive">[[localize('VolumeLevel', 'rawVolume', rawVolume)]]</d2l-offscreen>
 							</div>
 						</div>
 					</template>
