@@ -19,6 +19,7 @@ import 'd2l-typography/d2l-typography.js';
 import 'fullscreen-api/fullscreen-api.js';
 import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
 import './localize-behavior.js';
+import 'd2l-offscreen/d2l-offscreen.js';
 const $_documentContainer = document.createElement('template');
 
 $_documentContainer.innerHTML = `<dom-module id="d2l-video">
@@ -165,7 +166,7 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 		<fullscreen-api id="fsApi" target="{{ _getFsTarget() }}" fullscreen="{{ isFullscreen }}"></fullscreen-api>
 
 		<div id="container" on-tap="_onContainerTap">
-			<video id="media" controls$="{{ _isMobileSafari() }}" preload="{{ _getPreload(autoLoad) }}" poster="{{ poster }}" on-tap="_onVideoTap" autoplay="{{ _getAutoplay(autoplay) }}" aria-label$="[[localize('VideoPlayer')]]"></video>
+			<video id="media" controls$="{{ _isMobileSafari() }}" preload="{{ _getPreload(autoLoad) }}" poster="{{ poster }}" on-tap="_onVideoTap" autoplay="{{ _getAutoplay(autoplay) }}" aria-label$="[[localize('EvidenceVideoPlayer')]]"></video>
 			<div id="controlBar" hidden$="{{ _isMobileSafari() }}" class="layout horizontal center d2l-typography">
 				<div class="control play-pause-container">
 					<button hidden$="{{ isPlaying }}" on-tap="_playPause" aria-label$="[[localize('Play')]]"><d2l-icon icon="d2l-tier3:play"></d2l-icon></button>
@@ -177,6 +178,7 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 						<div class="volume-control-container" on-mouseover="_showVolumeControlByHover" on-mouseout="_hideVolumeControlByHover" >
 							<div class="volume-control" on-tap="_onVolumeControlTap">
 								<d2l-seek-bar id="volumeBar" value="40" immediate-value="{{ rawVolume }}" vertical="" aria-label$="[[localize('VolumeBar')]]"></d2l-seek-bar>
+								<d2l-offscreen aria-live="assertive">[[localize('VolumeLevel', 'rawVolume', rawVolume)]]</d2l-offscreen>
 							</div>
 						</div>
 					</template>

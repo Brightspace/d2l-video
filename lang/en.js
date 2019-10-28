@@ -8,8 +8,10 @@ window.D2L.PolymerBehaviors.D2LVideo.LangTerms = window.D2L.PolymerBehaviors.D2L
 window.D2L.PolymerBehaviors.D2LVideo.LangTerms.en = {
 	"Play": "Play",
 	"Pause": "Pause",
+	"Volume": "Volume",
+	"VolumeLevel": "Volume {rawVolume}",
 	"Fullscreen": "Fullscreen",
-	"VideoPlayer": "Video Player",
+	"EvidenceVideoPlayer": "Evidence Video Player",
 	"VolumeBar": "Volume Bar",
 	"SeekBar": "Seek Bar"
 };
