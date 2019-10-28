@@ -5,7 +5,7 @@ window.D2L.PolymerBehaviors = window.D2L.PolymerBehaviors || {};
 window.D2L.PolymerBehaviors.D2LVideo = window.D2L.PolymerBehaviors.D2LVideo || {};
 window.D2L.PolymerBehaviors.D2LVideo.LangTerms = window.D2L.PolymerBehaviors.D2LVideo.LangTerms || {};
 
-window.D2L.PolymerBehaviors.D2LVideo.LangTerms.nb = {
+window.D2L.PolymerBehaviors.D2LVideo.LangTerms.de = {
 	"Play": "Play",
 	"Pause": "Pause",
 	"Volume": "Volume",
