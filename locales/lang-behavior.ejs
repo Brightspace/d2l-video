@@ -6,6 +6,4 @@ window.D2L.D2LVideo = window.D2L.D2LVideo || {};
 	* <%- data.comment %>
 	* @polymerBehavior window.D2L.D2LVideo.Lang<%- data.properLang %>Behavior
 	*/
-window.D2L.D2LVideo.Lang<%- data.properLang %>Behavior = {
-	'<%- data.lang %>': <%- data.resources %>
-};
+window.D2L.PolymerBehaviors.D2LVideo.LangTerms["<%- data.lang %>"] = <%- data.resources %>;

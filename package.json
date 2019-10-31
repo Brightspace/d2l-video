@@ -13,7 +13,8 @@
     "lint:wc": "polymer lint",
     "start": "polymer serve",
     "test": "polymer test -l chrome",
-    "posttest": "npm run lint"
+    "posttest": "npm run lint",
+    "localize": "gulp localize"
   },
   "author": "D2L Corporation",
   "license": "Apache-2.0",
