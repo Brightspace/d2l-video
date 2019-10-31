@@ -20,7 +20,7 @@ const config = {
 		data: {
 			lang,
 			properLang: lang.charAt(0).toUpperCase() + lang.slice(1).replace('-', ''),
-			resources: JSON.stringify(localeResources[lang], null, '\t\t\t\t'),
+			resources: JSON.stringify(localeResources[lang], null, '\t'),
 			comment: 'This file is auto-generated. Do not modify.'
 		}
 	}))
