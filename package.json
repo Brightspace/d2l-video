@@ -13,7 +13,8 @@
     "lint:wc": "polymer lint",
     "start": "polymer serve",
     "test": "polymer test -l chrome",
-    "posttest": "npm run lint"
+    "posttest": "npm run lint",
+    "localize": "gulp localize"
   },
   "author": "D2L Corporation",
   "license": "Apache-2.0",
@@ -22,10 +23,16 @@
     "@polymer/iron-component-page": "^3.0.0-pre.18",
     "@webcomponents/webcomponentsjs": "^2.2.1",
     "babel-eslint": "^10.0.1",
+    "del": "^5.1.0",
     "eslint": "^4.15.0",
     "eslint-config-brightspace": "^0.4.0",
     "eslint-plugin-html": "^4.0.1",
+    "gulp": "^4.0.2",
+    "gulp-ejs": "^4.1.2",
+    "gulp-rename": "^1.4.0",
+    "merge-stream": "^2.0.0",
     "polymer-cli": "^1.9.1",
+    "require-dir": "^1.2.0",
     "wct-browser-legacy": "^1.0.1"
   },
   "resolutions": {
@@ -37,7 +44,6 @@
   "dependencies": {
     "@d2l/media-behavior": "Brightspace/d2l-media-behavior#semver:^1",
     "@d2l/seek-bar": "Brightspace/d2l-seek-bar#semver:^1",
-    "d2l-offscreen": "BrightspaceUI/offscreen#semver:^4",
     "@polymer/iron-a11y-keys-behavior": "^3.0.0-pre.18",
     "@polymer/iron-flex-layout": "^3.0.0-pre.18",
     "@polymer/iron-range-behavior": "^3.0.0-pre.18",
@@ -46,6 +52,7 @@
     "d2l-colors": "BrightspaceUI/colors#semver:^4",
     "d2l-icons": "BrightspaceUI/icons#semver:^6",
     "d2l-localize-behavior": "BrightspaceUI/localize-behavior#semver:^2",
+    "d2l-offscreen": "BrightspaceUI/offscreen#semver:^4",
     "d2l-typography": "BrightspaceUI/typography#semver:^7",
     "fullscreen-api": "Brightspace/fullscreen-api#semver:^3"
   }

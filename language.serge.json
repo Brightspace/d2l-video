@@ -1,0 +1,5 @@
+{
+	"name": "d2l-video",
+	"source_dir": "lang/",
+	"output_file_path": "locales/%CULTURES%.json"
+}
