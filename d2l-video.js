@@ -69,7 +69,23 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 
 			#controlBar .control {
 				margin: 10px 10px;
+				border-radius: 4px;
 			}
+
+			.control:hover,
+			.control:hover d2l-icon,
+			.control:hover .d2l-body-compact {
+				color: black;
+				background: var(--d2l-color-regolith);
+			}
+
+			.control:focus,
+			.control:focus d2l-icon {
+				background: var(--d2l-color-regolith);
+				outline: 2px solid var(--d2l-color-celestine);
+				color: black;
+			}
+
 
 			#controlBar .time-control {
 				margin: 0 5px;
@@ -84,7 +100,7 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 			}
 
 			d2l-icon {
-				color: white;
+				color: var(--d2l-color-white);
 				padding: 2px;
 			}
 
@@ -131,7 +147,7 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 			}
 
 			.playback-speed-control {
-				color: #fff;
+				color: var(--d2l-color-white);
 				background-color: rgba(0, 0, 0, 0.6);
 				border-radius: 8px;
 				width: 60px;
@@ -141,7 +157,7 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 			}
 
 			.playback-speed-control button {
-				color: #fff;
+				color: var(--d2l-color-white);
 				width: 100%;
 				padding: 5px 0;
 				display: block;
@@ -155,12 +171,12 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 			.playback-speed-control button[active],
 			.playback-speed-control button:hover,
 			.playback-speed-control button:focus {
-				background: #fff;
-				color: #000;
+				background: var(--d2l-color-white);
+				color: black;
 			}
 
-			.playback-speed {
-				color: rgba(255,255,255,0.7);
+			.playback-speed-container .d2l-body-compact {
+				color: var(--d2l-color-white);
 				width: 30px;
 				text-align: left;
 				margin-left: 5px;
@@ -173,17 +189,6 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 				padding: 2px;
 				background: none;
 				border: none;
-			}
-
-			button:hover {
-				color: black;
-				background: var(--d2l-color-regolith);
-			}
-
-			button:focus {
-				background: var(--d2l-color-regolith);
-				outline: 2px solid var(--d2l-color-celestine);
-				color: black;
 			}
 
 			.volume-container {
