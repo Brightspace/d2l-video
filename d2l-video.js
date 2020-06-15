@@ -80,7 +80,7 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 			}
 
 			.control-icon {
-				display: block;
+				display: inline-block;
 			}
 
 			d2l-icon {
@@ -123,6 +123,50 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 				padding: 12px 6px;
 			}
 
+			.playback-speed-control-container {
+				z-index: 1;
+				position: absolute;
+				bottom: 100%;
+				left: -100%;
+			}
+
+			.playback-speed-control {
+				color: #fff;
+				background-color: rgba(0, 0, 0, 0.6);
+				border-radius: 8px;
+				width: 60px;
+				padding: 12px 6px;
+				text-align: center;
+				transform: translateX(72%);
+			}
+
+			.playback-speed-control button {
+				color: #fff;
+				width: 100%;
+				padding: 5px 0;
+				display: block;
+				border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+			}
+
+			.playback-speed-control button:last-child {
+				border-bottom: none;
+			}
+
+			.playback-speed-control button[active],
+			.playback-speed-control button:hover,
+			.playback-speed-control button:focus {
+				background: #fff;
+				color: #000;
+			}
+
+			.playback-speed {
+				color: rgba(255,255,255,0.7);
+				width: 30px;
+				text-align: left;
+				margin-left: 5px;
+				display: inline-block;
+			}
+
 			button {
 				cursor: pointer;
 				margin: 0;
@@ -131,18 +175,22 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 				border: none;
 			}
 
-			button:hover d2l-icon {
+			button:hover {
 				color: black;
 				background: var(--d2l-color-regolith);
 			}
 
-			button:focus d2l-icon{
+			button:focus {
 				background: var(--d2l-color-regolith);
 				outline: 2px solid var(--d2l-color-celestine);
 				color: black;
 			}
 
 			.volume-container {
+				position: relative;
+			}
+
+			.playback-speed-container {
 				position: relative;
 			}
 
@@ -177,6 +225,24 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 							<div class="volume-control" on-tap="_onVolumeControlTap">
 								<d2l-seek-bar id="volumeBar" value="40" immediate-value="{{ rawVolume }}" vertical="" aria-label$="[[localize('VolumeBar')]]"></d2l-seek-bar>
 								<d2l-offscreen aria-live="assertive">[[localize('VolumeLevel', 'rawVolume', rawVolume)]]</d2l-offscreen>
+							</div>
+						</div>
+					</template>
+				</div>
+				<div class="control playback-speed-container" on-mouseover="_showPlaybackSpeedControlByHover" on-mouseout="_hidePlaybackSpeedControlByHover">
+					<button aria-label$="[[localize('PlaybackSpeed')]]" on-focus="_showPlaybackSpeedControlByHover" on-tap="_togglePlaybackSpeedControl">
+						<d2l-icon class="control-icon" icon="d2l-tier1:time"></d2l-icon>
+						<div class="playback-speed d2l-body-compact">{{ playbackSpeed }}x</div>
+					</button>
+					<template is="dom-if" if="{{ playbackSpeedControlVisible }}" id="playback-controls">
+						<div class="playback-speed-control-container" on-mouseover="_showPlaybackSpeedControlByHover" on-mouseout="_hidePlaybackSpeedControlByHover" >
+							<div class="playback-speed-control">
+								<button on-tap="_onPlaybackSpeedControlChanged" value="0.25">0.25</button>
+								<button on-tap="_onPlaybackSpeedControlChanged" value="0.5">0.5</button>
+								<button on-tap="_onPlaybackSpeedControlChanged" value="1">Normal</button>
+								<button on-tap="_onPlaybackSpeedControlChanged" value="1.25">1.25</button>
+								<button on-tap="_onPlaybackSpeedControlChanged" value="1.5">1.5</button>
+								<button on-tap="_onPlaybackSpeedControlChanged" value="2">2</button>
 							</div>
 						</div>
 					</template>
@@ -222,7 +288,19 @@ Polymer({
 			type: Number,
 			observer: '_rawVolumeChanged'
 		},
+		_currentPlaybackSpeedItem: {
+			type: Node,
+			value: null,
+		},
+		playbackSpeed: {
+			type: Number,
+			value: 1,
+		},
 		volumeControlVisible: {
+			type: Boolean,
+			value: false
+		},
+		playbackSpeedControlVisible: {
 			type: Boolean,
 			value: false
 		}
@@ -259,6 +337,24 @@ Polymer({
 		e.stopPropagation();
 	},
 
+	_onPlaybackSpeedControlChanged: function(e) {
+		if(this._currentPlaybackSpeedItem) {
+			this._currentPlaybackSpeedItem.removeAttribute('active')
+		}
+
+		this._currentPlaybackSpeedItem = e.target
+
+		e.target.setAttribute('active', "");
+
+		this.playbackSpeed = e.target.value;
+		this.$.media.playbackRate = this.playbackSpeed;
+		console.log(`Playback speed: ${e.target.value}`)
+	},
+
+	_activeSpeed: function(value) {
+		return value === this.playbackSpeed
+	},
+
 	_rawVolumeChanged: function(rawVolume) {
 		this.volume = rawVolume / 100;
 	},
@@ -272,12 +368,25 @@ Polymer({
 		this.volumeControlVisible = !this.volumeControlVisible;
 	},
 
+	_togglePlaybackSpeedControl: function(e) {
+		e.stopPropagation();
+		this.playbackSpeedControlVisible = !this.playbackSpeedControlVisible;
+	},
+
 	_showVolumeControlByHover: function() {
 		this.volumeControlVisible = true;
 	},
-
+	
 	_hideVolumeControlByHover: function() {
 		this.volumeControlVisible = false;
+	},
+
+	_showPlaybackSpeedControlByHover: function() {
+		this.playbackSpeedControlVisible = true;
+	},
+
+	_hidePlaybackSpeedControlByHover: function() {
+		this.playbackSpeedControlVisible = false;
 	},
 
 	_isMobileSafari: function() {

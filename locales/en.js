@@ -13,6 +13,8 @@ window.D2L.PolymerBehaviors.D2LVideo.LangTerms["en"] = {
 	"Pause": "Pause",
 	"Volume": "Volume",
 	"VolumeLevel": "Volume {rawVolume}",
+	"PlaybackSpeed": "Playback Speed",
+	"PlaybackSpeedValue": "Playback Speed {playbackSpeed}",
 	"Fullscreen": "Fullscreen",
 	"EvidenceVideoPlayer": "Evidence Video Player",
 	"VolumeBar": "Volume Bar",
