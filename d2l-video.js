@@ -105,7 +105,7 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 			}
 
 			d2l-icon {
-				color: var(--d2l-color-white);
+				color: white;
 				padding: 2px;
 			}
 
@@ -125,7 +125,7 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 			}
 
 			.time-control {
-				color: var(--d2l-color-white);
+				color: white;
 			}
 
 			.volume-control-container {
@@ -151,7 +151,7 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 			}
 
 			#playback-speed-control {
-				color: var(--d2l-color-white);
+				color: white;
 				background-color: rgba(0, 0, 0, 0.6);
 				border-radius: 8px 8px 0 0;
 				width: 60px;
@@ -159,7 +159,7 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 			}
 
 			#playback-speed-control button {
-				color: var(--d2l-color-white);
+				color: white;
 				width: 100%;
 				padding: 5px 0;
 				display: block;
@@ -173,12 +173,12 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 			#playback-speed-control button[active],
 			#playback-speed-control button:hover,
 			#playback-speed-control button:focus {
-				background: var(--d2l-color-white);
+				background: white;
 				color: black;
 			}
 
 			.playback-speed-container .d2l-body-compact {
-				color: var(--d2l-color-white);
+				color: white;
 				width: 35px;
 				display: inline-block;
 			}
@@ -192,7 +192,7 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 			}
 
 			.message-overlay {
-				color: var(--d2l-color-white);
+				color: white;
 				width: 100%;
 				height: 100%;
 				display: flex;
@@ -287,7 +287,7 @@ Polymer({
 			observer: '_rawVolumeChanged'
 		},
 		_currentPlaybackSpeedItem: {
-			type: Node,
+			type: Object,
 			value: null,
 		},
 		playbackSpeed: {
