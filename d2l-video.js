@@ -70,6 +70,7 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 			#controlBar .control {
 				margin: 10px 10px;
 				border-radius: 4px;
+				position: relative;
 			}
 
 			#controlBar .control button {
@@ -128,7 +129,6 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 			}
 
 			.volume-control-container {
-				z-index: 0;
 				padding: 5px 20px 5px 40px;
 				position: absolute;
 				bottom: 68px;
@@ -144,11 +144,10 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 			}
 
 			.playback-speed-control-container {
-				z-index: 1;
 				position: absolute;
 				bottom: -2px;
 				padding-bottom: 40px;
-				left: -13px;
+				left: -5px;
 			}
 
 			#playback-speed-control {
@@ -180,9 +179,7 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 
 			.playback-speed-container .d2l-body-compact {
 				color: var(--d2l-color-white);
-				width: 30px;
-				text-align: left;
-				margin-left: 5px;
+				width: 35px;
 				display: inline-block;
 			}
 
@@ -192,14 +189,6 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 				padding: 2px;
 				background: none;
 				border: none;
-			}
-
-			.volume-container {
-				position: relative;
-			}
-
-			.playback-speed-container {
-				position: relative;
 			}
 
 			.message-overlay {
