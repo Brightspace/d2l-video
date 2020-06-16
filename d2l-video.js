@@ -72,6 +72,11 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 				border-radius: 4px;
 			}
 
+			#controlBar .control button {
+				position: relative;
+				z-index: 1;
+			}
+
 			.control:hover,
 			.control:hover d2l-icon,
 			.control:hover .d2l-body-compact {
@@ -85,7 +90,6 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 				outline: 2px solid var(--d2l-color-celestine);
 				color: black;
 			}
-
 
 			#controlBar .time-control {
 				margin: 0 5px;
@@ -124,11 +128,11 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 			}
 
 			.volume-control-container {
-				z-index: 1;
+				z-index: 0;
 				padding: 5px 20px 5px 40px;
 				position: absolute;
-				bottom: 69px;
-				left: -87px;
+				bottom: 68px;
+				left: -83px;
 				transform: rotate(-90deg);
 			}
 
@@ -142,21 +146,20 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 			.playback-speed-control-container {
 				z-index: 1;
 				position: absolute;
-				bottom: 100%;
-				left: -100%;
+				bottom: -2px;
+				padding-bottom: 40px;
+				left: -13px;
 			}
 
-			.playback-speed-control {
+			#playback-speed-control {
 				color: var(--d2l-color-white);
 				background-color: rgba(0, 0, 0, 0.6);
-				border-radius: 8px;
+				border-radius: 8px 8px 0 0;
 				width: 60px;
-				padding: 12px 6px;
-				text-align: center;
-				transform: translateX(72%);
+				padding: 12px 6px 6px;
 			}
 
-			.playback-speed-control button {
+			#playback-speed-control button {
 				color: var(--d2l-color-white);
 				width: 100%;
 				padding: 5px 0;
@@ -164,13 +167,13 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 				border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 			}
 
-			.playback-speed-control button:last-child {
+			#playback-speed-control button:last-child {
 				border-bottom: none;
 			}
 
-			.playback-speed-control button[active],
-			.playback-speed-control button:hover,
-			.playback-speed-control button:focus {
+			#playback-speed-control button[active],
+			#playback-speed-control button:hover,
+			#playback-speed-control button:focus {
 				background: var(--d2l-color-white);
 				color: black;
 			}
@@ -224,7 +227,9 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 					<button hidden$="{{ !isPlaying }}" on-tap="_playPause" aria-label$="[[localize('Pause')]]"><d2l-icon icon="d2l-tier3:pause"></d2l-icon></button>
 				</div>
 				<div class="control volume-container" on-mouseover="_showVolumeControlByHover" on-mouseout="_hideVolumeControlByHover">
-					<button aria-label$="[[localize('Volume')]]" on-focus="_showVolumeControlByHover" on-tap="_toggleVolumeControl"><d2l-icon class="control-icon" icon="d2l-tier1:volume"></d2l-icon></button>
+					<button aria-label$="[[localize('Volume')]]" aria-haspopup="true" aria-expanded="{{ volumeControlVisible }}" on-tap="_toggleVolumeControl">
+						<d2l-icon class="control-icon" icon="d2l-tier1:volume"></d2l-icon>
+					</button>
 					<template is="dom-if" if="{{ volumeControlVisible }}">
 						<div class="volume-control-container" on-mouseover="_showVolumeControlByHover" on-mouseout="_hideVolumeControlByHover" >
 							<div class="volume-control" on-tap="_onVolumeControlTap">
@@ -235,19 +240,18 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 					</template>
 				</div>
 				<div class="control playback-speed-container" on-mouseover="_showPlaybackSpeedControlByHover" on-mouseout="_hidePlaybackSpeedControlByHover">
-					<button aria-label$="[[localize('PlaybackSpeed')]]" on-focus="_showPlaybackSpeedControlByHover" on-tap="_togglePlaybackSpeedControl">
+					<button id="playback-speed-control-toggle" aria-label$="[[localize('PlaybackSpeed')]]" on-tap="_togglePlaybackSpeedControl" aria-haspopup="true" aria-controls="playback-speed-control" aria-expanded="{{ playbackSpeedControlVisible }}">
 						<d2l-icon class="control-icon" icon="d2l-tier1:time"></d2l-icon>
 						<div class="playback-speed d2l-body-compact">{{ playbackSpeed }}x</div>
 					</button>
 					<template is="dom-if" if="{{ playbackSpeedControlVisible }}" id="playback-controls">
 						<div class="playback-speed-control-container" on-mouseover="_showPlaybackSpeedControlByHover" on-mouseout="_hidePlaybackSpeedControlByHover" >
-							<div class="playback-speed-control">
-								<button on-tap="_onPlaybackSpeedControlChanged" value="0.25">0.25</button>
-								<button on-tap="_onPlaybackSpeedControlChanged" value="0.5">0.5</button>
-								<button on-tap="_onPlaybackSpeedControlChanged" value="1">Normal</button>
-								<button on-tap="_onPlaybackSpeedControlChanged" value="1.25">1.25</button>
-								<button on-tap="_onPlaybackSpeedControlChanged" value="1.5">1.5</button>
-								<button on-tap="_onPlaybackSpeedControlChanged" value="2">2</button>
+							<div role="menu" aria-labelledby="playback-speed-control-toggle" id="playback-speed-control">
+								<dom-repeat items="{{ playbackSpeeds }}">
+									<template>
+										<button role="menuitem"  on-tap="_onPlaybackSpeedControlChanged" value="{{ item.value }}">{{ item.display}}</button>
+									</template>
+								</dom-repeat>
 							</div>
 						</div>
 					</template>
@@ -301,6 +305,18 @@ Polymer({
 			type: Number,
 			value: 1,
 		},
+		playbackSpeeds: {
+			value() {
+				return [
+					{ value: 0.25, display: '0.25'},
+					{ value: 0.5, display: '0.5'},
+					{ value: 1, display: 'Normal'},
+					{ value: 1.25, display: '1.25'},
+					{ value: 1.5, display: '1.5'},
+					{ value: 2, display: '2'},
+				];
+			}
+		},
 		volumeControlVisible: {
 			type: Boolean,
 			value: false
@@ -308,7 +324,14 @@ Polymer({
 		playbackSpeedControlVisible: {
 			type: Boolean,
 			value: false
-		}
+		},
+		/**
+		 * Tracks the currently focused item for managing tabindex
+		 */
+		_currentlyFocusedElement: {
+			type: Node,
+			value: null
+		},
 	},
 
 	hostAttributes: {
@@ -317,7 +340,8 @@ Polymer({
 
 	keyBindings: {
 		'space': '_playPause',
-		'f': '_toggleFullscreen'
+		'f': '_toggleFullscreen',
+		'esc': '_closeControls'
 	},
 
 	_onContainerTap: function() {
@@ -335,6 +359,7 @@ Polymer({
 	},
 
 	_onVideoTap: function() {
+		this._closeControls();
 		this._playPause();
 	},
 
@@ -343,28 +368,32 @@ Polymer({
 	},
 
 	_onPlaybackSpeedControlChanged: function(e) {
-		if(this._currentPlaybackSpeedItem) {
-			this._currentPlaybackSpeedItem.removeAttribute('active')
+		if (this._currentPlaybackSpeedItem) {
+			this._currentPlaybackSpeedItem.removeAttribute('active');
 		}
 
-		this._currentPlaybackSpeedItem = e.target
-
-		e.target.setAttribute('active', "");
+		this._currentPlaybackSpeedItem = e.target;
+		e.target.setAttribute('active', '');
 
 		this.playbackSpeed = e.target.value;
 		this.$.media.playbackRate = this.playbackSpeed;
-		console.log(`Playback speed: ${e.target.value}`)
 	},
 
 	_activeSpeed: function(value) {
-		return value === this.playbackSpeed
+		return value === this.playbackSpeed;
 	},
 
 	_rawVolumeChanged: function(rawVolume) {
 		this.volume = rawVolume / 100;
 	},
 
+	_closeControls: function() {
+		this.volumeControlVisible = false;
+		this.playbackSpeedControlVisible = false;
+	},
+
 	_toggleFullscreen: function() {
+		this._closeControls();
 		this.$.fsApi.toggleFullscreen();
 	},
 
@@ -381,7 +410,7 @@ Polymer({
 	_showVolumeControlByHover: function() {
 		this.volumeControlVisible = true;
 	},
-	
+
 	_hideVolumeControlByHover: function() {
 		this.volumeControlVisible = false;
 	},
@@ -392,6 +421,10 @@ Polymer({
 
 	_hidePlaybackSpeedControlByHover: function() {
 		this.playbackSpeedControlVisible = false;
+	},
+
+	_controlsOpen: function() {
+		return this.volumeControlVisible || this.playbackSpeedControlVisible;
 	},
 
 	_isMobileSafari: function() {
