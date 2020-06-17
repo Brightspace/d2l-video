@@ -238,7 +238,7 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 							<div role="menu" aria-labelledby="playback-speed-control-toggle" id="playback-speed-control">
 								<dom-repeat items="{{ playbackSpeeds }}">
 									<template>
-										<button role="menuitem"  on-tap="_onPlaybackSpeedControlChanged" value="{{ item.value }}">{{ item.display}}</button>
+										<button role="menuitem" on-tap="_onPlaybackSpeedControlChanged" value="{{ item.value }}" aria-label$="[[localize('PlaybackSpeedValue', 'playbackSpeed', item.display)]]">{{ item.display}}</button>
 									</template>
 								</dom-repeat>
 							</div>
