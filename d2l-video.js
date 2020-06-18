@@ -60,36 +60,31 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 				left: 0;
 				right: 0;
 				bottom: 0;
-				height: 50px;
-				background-color: rgba(0, 0, 0, 0.6);
+				background-color: rgba(0, 0, 0, 0.54);
 				box-sizing: border-box;
-				padding: 0 10px;
 				width: 100%;
 			}
 
 			#controlBar .control {
-				margin: 10px 10px;
-				border-radius: 4px;
 				position: relative;
 			}
 
-			#controlBar .control button {
+			#controlBar .control button:not([role=menuitem]) {
+				margin: 3px;
+				padding: 7px;
+				border-radius: 4px;
+				position: relative;
 				position: relative;
 				z-index: 1;
 			}
 
-			.control:hover,
-			.control:hover d2l-icon,
-			.control:hover .d2l-body-compact {
-				color: black;
-				background: var(--d2l-color-regolith);
+			#controlBar .control button:hover {
+				background: rgba(255, 255, 255, 0.2);
 			}
 
-			.control:focus,
-			.control:focus d2l-icon {
-				background: var(--d2l-color-regolith);
-				outline: 2px solid var(--d2l-color-celestine);
-				color: black;
+			#controlBar .control button:focus {
+				outline: 2px solid white;
+				border-radius: 5px;
 			}
 
 			#controlBar .time-control {
@@ -113,6 +108,12 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 				display: none;
 			}
 
+			/* TODO: remove this once we use tier1 icons for play/pause (18px by default) */
+			.play-pause-container d2l-icon {
+				width: 18px;
+				height: 18px;
+			}
+
 			#seekBar {
 				--d2l-knob-size: 24px;
 				--d2l-inner-knob-margin: 6px;
@@ -131,13 +132,13 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 			.volume-control-container {
 				padding: 5px 20px 5px 40px;
 				position: absolute;
-				bottom: 68px;
-				left: -83px;
+				bottom: 72px;
+				left: -73px;
 				transform: rotate(-90deg);
 			}
 
 			.volume-control {
-				background-color: rgba(0, 0, 0, 0.6);
+				background-color: rgba(0, 0, 0, 0.54);
 				border-radius: 0 8px 8px 0;
 				width: 120px;
 				padding: 12px 6px;
@@ -145,23 +146,22 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 
 			.playback-speed-control-container {
 				position: absolute;
-				bottom: -2px;
+				bottom: 0px;
 				padding-bottom: 40px;
-				left: -5px;
+				left: -15px;
 			}
 
 			#playback-speed-control {
 				color: white;
-				background-color: rgba(0, 0, 0, 0.6);
-				border-radius: 8px 8px 0 0;
-				width: 60px;
-				padding: 12px 6px 6px;
+				background-color: rgba(0, 0, 0, 0.54);
+				border-radius: 5px 5px 0 0;
+				overflow: hidden;
 			}
 
 			#playback-speed-control button {
 				color: white;
 				width: 100%;
-				padding: 5px 0;
+				padding: 7px 30px;
 				display: block;
 				border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 			}
@@ -170,11 +170,8 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 				border-bottom: none;
 			}
 
-			#playback-speed-control button[active],
-			#playback-speed-control button:hover,
-			#playback-speed-control button:focus {
-				background: white;
-				color: black;
+			#playback-speed-control button[active] {
+				background: rgba(255, 255, 255, 0.3);
 			}
 
 			.playback-speed-container .d2l-body-compact {
@@ -204,6 +201,37 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 			.message-overlay p {
 				width: 100%;
 			}
+
+			@media only screen and (max-width: 553px) {
+				#controlBar {
+					padding: 0;
+				}
+
+				#controlBar {
+					padding: 0;
+				}
+
+				.play-pause-container {
+					padding: 0;
+				}
+
+				#controlBar .control {
+					margin: 2px;
+					padding: 4px;
+					border-radius: 4px;
+					position: relative;
+				}
+
+				#controlBar .time-control,
+				#controlBar .seek-control {
+					margin: 0 2px;
+				}
+			}
+			@media only screen and (max-width: 450px) {
+				.playback-speed-container {
+					display: none;
+				}
+			}
 		</style>
 
 		<fullscreen-api id="fsApi" target="{{ _getFsTarget() }}" fullscreen="{{ isFullscreen }}"></fullscreen-api>
@@ -228,9 +256,15 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 						</div>
 					</template>
 				</div>
+				<div class="layout horizontal center flex time-container" dir="ltr">
+					<div class="time-control time-control-left d2l-body-compact">{{ _formatTime(currentTime) }}</div>
+					<div class="flex seek-control">
+						<d2l-seek-bar id="seekBar" value="[[ percentComplete ]]" immediate-value="{{ immediateValue }}" aria-label$="[[localize('SeekBar')]]" on-drag-start="_onSeekStart" on-drag-end="_onSeekEnd" on-position-change="_onPositionChange"></d2l-seek-bar>
+					</div>
+					<div class="time-control time-control-right d2l-body-compact">{{ _formatTime(duration) }}</div>
+				</div>
 				<div class="control playback-speed-container" on-mouseover="_showPlaybackSpeedControlByHover" on-mouseout="_hidePlaybackSpeedControlByHover">
 					<button id="playback-speed-control-toggle" aria-label$="[[localize('PlaybackSpeed')]]" on-tap="_togglePlaybackSpeedControl" aria-haspopup="true" aria-controls="playback-speed-control" aria-expanded="{{ playbackSpeedControlVisible }}">
-						<d2l-icon class="control-icon" icon="d2l-tier1:time"></d2l-icon>
 						<div class="playback-speed d2l-body-compact">{{ playbackSpeed }}x</div>
 					</button>
 					<template is="dom-if" if="{{ playbackSpeedControlVisible }}" id="playback-controls">
@@ -244,13 +278,6 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 							</div>
 						</div>
 					</template>
-				</div>
-				<div class="layout horizontal center flex time-container" dir="ltr">
-					<div class="time-control time-control-left d2l-body-compact">{{ _formatTime(currentTime) }}</div>
-					<div class="flex seek-control">
-						<d2l-seek-bar id="seekBar" value="[[ percentComplete ]]" immediate-value="{{ immediateValue }}" aria-label$="[[localize('SeekBar')]]" on-drag-start="_onSeekStart" on-drag-end="_onSeekEnd" on-position-change="_onPositionChange"></d2l-seek-bar>
-					</div>
-					<div class="time-control time-control-right d2l-body-compact">{{ _formatTime(duration) }}</div>
 				</div>
 				<div class="expand control">
 					<button aria-label$="[[localize('Fullscreen')]]" on-tap="_toggleFullscreen"><d2l-icon class="control-icon" icon="[[ _getFullscreenIcon(isFullscreen) ]]"></d2l-icon></button>
@@ -364,7 +391,7 @@ Polymer({
 		this._currentPlaybackSpeedItem = e.target;
 		e.target.setAttribute('active', '');
 
-		this.playbackSpeed = e.target.value;
+		this.playbackSpeed = parseFloat(e.target.value);
 		this.$.media.playbackRate = this.playbackSpeed;
 	},
 
