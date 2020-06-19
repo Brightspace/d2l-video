@@ -69,7 +69,7 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 				position: relative;
 			}
 
-			#controlBar .control button:not([role=menuitem]) {
+			#controlBar .control > button {
 				margin: 3px;
 				padding: 7px;
 				border-radius: 4px;
@@ -108,12 +108,6 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 				display: none;
 			}
 
-			/* TODO: remove this once we use tier1 icons for play/pause (18px by default) */
-			.play-pause-container d2l-icon {
-				width: 18px;
-				height: 18px;
-			}
-
 			#seekBar {
 				--d2l-knob-size: 24px;
 				--d2l-inner-knob-margin: 6px;
@@ -146,15 +140,16 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 
 			.playback-speed-control-container {
 				position: absolute;
-				bottom: 0px;
+				bottom: 2px;
 				padding-bottom: 40px;
-				left: -15px;
+				left: -25px;
 			}
 
 			#playback-speed-control {
 				color: white;
 				background-color: rgba(0, 0, 0, 0.54);
 				border-radius: 5px 5px 0 0;
+				padding: 2px;
 				overflow: hidden;
 			}
 
@@ -176,7 +171,8 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 
 			.playback-speed-container .d2l-body-compact {
 				color: white;
-				width: 35px;
+				width: 32px;
+				line-height: 22px;
 				display: inline-block;
 			}
 
@@ -211,22 +207,29 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 					padding: 0;
 				}
 
-				.play-pause-container {
-					padding: 0;
-				}
-
 				#controlBar .control {
-					margin: 2px;
-					padding: 4px;
+					margin: 0;
+					padding: 0;
 					border-radius: 4px;
 					position: relative;
+				}
+
+				#controlBar .control > button {
+					padding: 2px;
 				}
 
 				#controlBar .time-control,
 				#controlBar .seek-control {
 					margin: 0 2px;
 				}
+
+				.volume-control-container {
+					padding-left: 32px;
+					bottom: 66px;
+					left: -77px;
+				}
 			}
+
 			@media only screen and (max-width: 450px) {
 				.playback-speed-container {
 					display: none;
@@ -240,8 +243,8 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 			<video id="media" controls$="{{ _isMobileSafari() }}" preload="{{ _getPreload(autoLoad) }}" poster="{{ poster }}" on-tap="_onVideoTap" autoplay="{{ _getAutoplay(autoplay) }}" aria-label$="[[localize('EvidenceVideoPlayer')]]"></video>
 			<div id="controlBar" hidden$="{{ _isMobileSafari() }}" class="layout horizontal center d2l-typography">
 				<div class="control play-pause-container">
-					<button hidden$="{{ isPlaying }}" on-tap="_playPause" aria-label$="[[localize('Play')]]"><d2l-icon icon="d2l-tier3:play"></d2l-icon></button>
-					<button hidden$="{{ !isPlaying }}" on-tap="_playPause" aria-label$="[[localize('Pause')]]"><d2l-icon icon="d2l-tier3:pause"></d2l-icon></button>
+					<button hidden$="{{ isPlaying }}" on-tap="_playPause" aria-label$="[[localize('Play')]]"><d2l-icon icon="d2l-tier1:play"></d2l-icon></button>
+					<button hidden$="{{ !isPlaying }}" on-tap="_playPause" aria-label$="[[localize('Pause')]]"><d2l-icon icon="d2l-tier1:pause"></d2l-icon></button>
 				</div>
 				<div class="control volume-container" on-mouseover="_showVolumeControlByHover" on-mouseout="_hideVolumeControlByHover">
 					<button aria-label$="[[localize('Volume')]]" aria-haspopup="true" aria-expanded="{{ volumeControlVisible }}" on-tap="_toggleVolumeControl">
@@ -265,14 +268,14 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 				</div>
 				<div class="control playback-speed-container" on-mouseover="_showPlaybackSpeedControlByHover" on-mouseout="_hidePlaybackSpeedControlByHover">
 					<button id="playback-speed-control-toggle" aria-label$="[[localize('PlaybackSpeed')]]" on-tap="_togglePlaybackSpeedControl" aria-haspopup="true" aria-controls="playback-speed-control" aria-expanded="{{ playbackSpeedControlVisible }}">
-						<div class="playback-speed d2l-body-compact">{{ playbackSpeed }}x</div>
+						<div class="playback-speed d2l-body-compact">[[localize('PlaybackSpeedDisplay', 'playbackSpeed', playbackSpeed)]]</div>
 					</button>
 					<template is="dom-if" if="{{ playbackSpeedControlVisible }}" id="playback-controls">
 						<div class="playback-speed-control-container" on-mouseover="_showPlaybackSpeedControlByHover" on-mouseout="_hidePlaybackSpeedControlByHover" >
 							<div role="menu" aria-labelledby="playback-speed-control-toggle" id="playback-speed-control">
 								<dom-repeat items="{{ playbackSpeeds }}">
 									<template>
-										<button role="menuitem" on-tap="_onPlaybackSpeedControlChanged" value="{{ item.value }}" aria-label$="[[localize('PlaybackSpeedValue', 'playbackSpeed', item.display)]]">{{ item.display}}</button>
+										<button role="menuitem" on-tap="_onPlaybackSpeedControlChanged" value="{{ item }}" aria-label$="[[localize('PlaybackSpeedLabel', 'playbackSpeed', item)]]">[[localize(item)]]</button>
 									</template>
 								</dom-repeat>
 							</div>
@@ -322,16 +325,16 @@ Polymer({
 			value: 1,
 		},
 		playbackSpeeds: {
-			value() {
-				return [
-					{ value: 0.25, display: '0.25'},
-					{ value: 0.5, display: '0.5'},
-					{ value: 1, display: 'Normal'},
-					{ value: 1.25, display: '1.25'},
-					{ value: 1.5, display: '1.5'},
-					{ value: 2, display: '2'},
-				];
-			}
+			type: Array,
+			value: [
+				0.25,
+				0.5,
+				0.75,
+				1,
+				1.25,
+				1.5,
+				2,
+			],
 		},
 		volumeControlVisible: {
 			type: Boolean,
