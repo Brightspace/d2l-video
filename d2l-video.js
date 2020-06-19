@@ -10,21 +10,19 @@ import '@polymer/polymer/polymer-legacy.js';
 
 import { IronA11yKeysBehavior } from '@polymer/iron-a11y-keys-behavior/iron-a11y-keys-behavior.js';
 import '@polymer/iron-flex-layout/iron-flex-layout-classes.js';
-import 'd2l-icons/d2l-icon.js';
-import 'd2l-icons/tier1-icons.js';
-import 'd2l-icons/tier3-icons.js';
+import '@brightspace-ui/core/components/icons/icon.js';
+import '@brightspace-ui/core/components/offscreen/offscreen.js';
+import '@brightspace-ui/core/components/typography/typography.js';
 import '@d2l/media-behavior/d2l-media-behavior.js';
 import '@d2l/seek-bar/d2l-seek-bar.js';
-import 'd2l-typography/d2l-typography.js';
 import 'fullscreen-api/fullscreen-api.js';
 import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
 import './localize-behavior.js';
-import 'd2l-offscreen/d2l-offscreen.js';
 const $_documentContainer = document.createElement('template');
 
 $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 	<template strip-whitespace="">
-		<style is="custom-style" include="iron-flex iron-flex-alignment d2l-typography">
+		<style is="custom-style" include="iron-flex iron-flex-alignment">
 			:host {
 				display: inline-block;
 				position: relative;
