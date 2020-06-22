@@ -74,7 +74,6 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 				padding: 7px;
 				border-radius: 4px;
 				position: relative;
-				position: relative;
 				z-index: 1;
 			}
 
@@ -199,10 +198,6 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 			}
 
 			@media only screen and (max-width: 553px) {
-				#controlBar {
-					padding: 0;
-				}
-
 				#controlBar {
 					padding: 0;
 				}
