@@ -64,8 +64,8 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 				width: 100%;
 				background: rgba(0, 0, 0, 0.69);
 				transition: 0.1s;
+				padding-top: 6px;
 			}
-
 
 			#controlBar:focus,
 			#controlBar:focus-within {
@@ -97,14 +97,6 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 				outline: none;
 			}
 
-			/* #controlBar .time-control {
-				margin: 0 5px;
-			} */
-
-			/* #controlBar .seek-control {
-				margin: 0 10px;
-			} */
-
 			.control-icon {
 				display: inline-block;
 			}
@@ -123,15 +115,12 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 				--d2l-outer-knob-color: var(--d2l-color-celestine-plus-1);
 				--d2l-knob-focus-color: #fff;
 				--d2l-knob-focus-size: 4px;
-				/* --d2l-outer-knob-border-color: transparent; */
-				/* --d2l-progress-border-color: transparent; */
-				/* --d2l-progress-shadow-color: transparent; */ 
 				--d2l-progress-border-radius: 0; 
 
 				position: absolute;
 				left: 0;
 				right: 0;
-				top: -8px;
+				top: -5px;
 			}
 
 			#volumeBar {
@@ -139,7 +128,6 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 				--d2l-outer-knob-color: var(--d2l-color-celestine-plus-1);
 				--d2l-knob-focus-color: #fff;
 				--d2l-knob-focus-size: 4px;
-				/* --d2l-knob-box-shadow: 1px 1px 0 0 rgba(0, 0, 0, 0.4); */
 			}
 
 			.time-container {
@@ -158,7 +146,7 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 			.volume-control-container {
 				padding: 4px 20px 5px 46px;
 				position: absolute;
-				bottom: 73px;
+				bottom: 76px;
 				left: -77px;
 				transform: rotate(-90deg);
 			}
@@ -166,7 +154,6 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 			.volume-control {
 				background-color: rgba(0, 0, 0, 0.69);
 				border-radius: 0 8px 8px 0;
-				/* border-radius: 8px; */
 				width: 120px;
 				padding: 12px 6px;
 			}
@@ -174,7 +161,7 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 			.playback-speed-control-container {
 				position: absolute;
 				bottom: 6px;
-				padding-bottom: 40px;
+				padding-bottom: 43px;
 				left: -25px;
 			}
 
@@ -231,7 +218,7 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 				width: 100%;
 			}
 
-			@media only screen and (max-width: 553px) {
+			@media only screen and (max-width: 320px) {
 				#controlBar {
 					padding: 0;
 					padding-top: 5px;
@@ -258,9 +245,7 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 					bottom: 66px;
 					left: -77px;
 				}
-			}
 
-			@media only screen and (max-width: 450px) {
 				.playback-speed-container {
 					display: none;
 				}
@@ -269,7 +254,7 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 
 		<fullscreen-api id="fsApi" target="{{ _getFsTarget() }}" fullscreen="{{ isFullscreen }}"></fullscreen-api>
 
-		<div id="container" on-tap="_onContainerTap" on-mouseover="_onVideoMouseOver" on-mousemove="mousemove" on-focus="_onVideoFocus" on-keydown="_showControlsTemp">
+		<div id="container" on-tap="_onContainerTap" on-mouseover="_onVideoMouseOver" on-mousemove="mousemove" on-focus="_onVideoFocus" on-keydown="_showControlsTimeout">
 			<video id="media" controls$="{{ _isMobileSafari() }}" preload="{{ _getPreload(autoLoad) }}" poster="{{ poster }}" on-tap="_onVideoTap" autoplay="{{ _getAutoplay(autoplay) }}" aria-label$="[[localize('EvidenceVideoPlayer')]]"></video>
 			<div id="controlBar" hidden$="{{ _controlsHidden() }}" class="layout horizontal center d2l-typography">
 				<d2l-seek-bar fullWidth solid id="seekBar" value="[[ percentComplete ]]" immediate-value="{{ immediateValue }}" aria-label$="[[localize('SeekBar')]]" on-drag-start="_onSeekStart" on-drag-end="_onSeekEnd" on-position-change="_onPositionChange"></d2l-seek-bar>
@@ -400,11 +385,10 @@ Polymer({
 	},
 
 	mousemove: function () {
-		this._showControlsTemp();
+		this._showControlsTimeout();
 	},
 
-	_showControlsTemp: function() {
-		console.log(this.isPlaying)
+	_showControlsTimeout: function() {
 		if (!this.fadeInBuffer) {
 			if (this.timer) {
 				clearTimeout(this.timer);
@@ -439,12 +423,8 @@ Polymer({
 
 	_onVideoTap: function() {
 		this._closeControls();
-		console.log('before', this.isPlaying)
 		this._playPause();
-		console.log('after', this.isPlaying)
-		// setTimeout(() => {
-			this._showControlsTemp();
-		// }, 20)
+		this._showControlsTimeout();
 	},
 
 	_onVolumeControlTap: function(e) {
