@@ -60,15 +60,30 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 				left: 0;
 				right: 0;
 				bottom: 0;
-				height: 50px;
-				background-color: rgba(0, 0, 0, 0.6);
+				background-color: rgba(0, 0, 0, 0.54);
 				box-sizing: border-box;
-				padding: 0 10px;
 				width: 100%;
 			}
 
 			#controlBar .control {
-				margin: 10px 10px;
+				position: relative;
+			}
+
+			#controlBar .control > button {
+				margin: 3px;
+				padding: 7px;
+				border-radius: 4px;
+				position: relative;
+				z-index: 1;
+			}
+
+			#controlBar .control button:hover {
+				background: rgba(255, 255, 255, 0.2);
+			}
+
+			#controlBar .control button:focus {
+				outline: 2px solid white;
+				border-radius: 5px;
 			}
 
 			#controlBar .time-control {
@@ -80,7 +95,7 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 			}
 
 			.control-icon {
-				display: block;
+				display: inline-block;
 			}
 
 			d2l-icon {
@@ -104,23 +119,60 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 			}
 
 			.time-control {
-				color: var(--d2l-color-white);
+				color: white;
 			}
 
 			.volume-control-container {
-				z-index: 1;
 				padding: 5px 20px 5px 40px;
 				position: absolute;
-				bottom: 69px;
-				left: -87px;
+				bottom: 72px;
+				left: -73px;
 				transform: rotate(-90deg);
 			}
 
 			.volume-control {
-				background-color: rgba(0, 0, 0, 0.6);
+				background-color: rgba(0, 0, 0, 0.54);
 				border-radius: 0 8px 8px 0;
 				width: 120px;
 				padding: 12px 6px;
+			}
+
+			.playback-speed-control-container {
+				position: absolute;
+				bottom: 2px;
+				padding-bottom: 40px;
+				left: -25px;
+			}
+
+			#playback-speed-control {
+				color: white;
+				background-color: rgba(0, 0, 0, 0.54);
+				border-radius: 5px 5px 0 0;
+				padding: 2px;
+				overflow: hidden;
+			}
+
+			#playback-speed-control button {
+				color: white;
+				width: 100%;
+				padding: 7px 30px;
+				display: block;
+				border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+			}
+
+			#playback-speed-control button:last-child {
+				border-bottom: none;
+			}
+
+			#playback-speed-control button[active] {
+				background: rgba(255, 255, 255, 0.3);
+			}
+
+			.playback-speed-container .d2l-body-compact {
+				color: white;
+				width: 32px;
+				line-height: 22px;
+				display: inline-block;
 			}
 
 			button {
@@ -131,23 +183,8 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 				border: none;
 			}
 
-			button:hover d2l-icon {
-				color: black;
-				background: var(--d2l-color-regolith);
-			}
-
-			button:focus d2l-icon{
-				background: var(--d2l-color-regolith);
-				outline: 2px solid var(--d2l-color-celestine);
-				color: black;
-			}
-
-			.volume-container {
-				position: relative;
-			}
-
 			.message-overlay {
-				color: var(--d2l-color-white);
+				color: white;
 				width: 100%;
 				height: 100%;
 				display: flex;
@@ -159,6 +196,40 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 			.message-overlay p {
 				width: 100%;
 			}
+
+			@media only screen and (max-width: 553px) {
+				#controlBar {
+					padding: 0;
+				}
+
+				#controlBar .control {
+					margin: 0;
+					padding: 0;
+					border-radius: 4px;
+					position: relative;
+				}
+
+				#controlBar .control > button {
+					padding: 2px;
+				}
+
+				#controlBar .time-control,
+				#controlBar .seek-control {
+					margin: 0 2px;
+				}
+
+				.volume-control-container {
+					padding-left: 32px;
+					bottom: 66px;
+					left: -77px;
+				}
+			}
+
+			@media only screen and (max-width: 450px) {
+				.playback-speed-container {
+					display: none;
+				}
+			}
 		</style>
 
 		<fullscreen-api id="fsApi" target="{{ _getFsTarget() }}" fullscreen="{{ isFullscreen }}"></fullscreen-api>
@@ -167,11 +238,13 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 			<video id="media" controls$="{{ _isMobileSafari() }}" preload="{{ _getPreload(autoLoad) }}" poster="{{ poster }}" on-tap="_onVideoTap" autoplay="{{ _getAutoplay(autoplay) }}" aria-label$="[[localize('EvidenceVideoPlayer')]]"></video>
 			<div id="controlBar" hidden$="{{ _isMobileSafari() }}" class="layout horizontal center d2l-typography">
 				<div class="control play-pause-container">
-					<button hidden$="{{ isPlaying }}" on-tap="_playPause" aria-label$="[[localize('Play')]]"><d2l-icon icon="d2l-tier3:play"></d2l-icon></button>
-					<button hidden$="{{ !isPlaying }}" on-tap="_playPause" aria-label$="[[localize('Pause')]]"><d2l-icon icon="d2l-tier3:pause"></d2l-icon></button>
+					<button hidden$="{{ isPlaying }}" on-tap="_playPause" aria-label$="[[localize('Play')]]"><d2l-icon icon="d2l-tier1:play"></d2l-icon></button>
+					<button hidden$="{{ !isPlaying }}" on-tap="_playPause" aria-label$="[[localize('Pause')]]"><d2l-icon icon="d2l-tier1:pause"></d2l-icon></button>
 				</div>
 				<div class="control volume-container" on-mouseover="_showVolumeControlByHover" on-mouseout="_hideVolumeControlByHover">
-					<button aria-label$="[[localize('Volume')]]" on-focus="_showVolumeControlByHover" on-tap="_toggleVolumeControl"><d2l-icon class="control-icon" icon="d2l-tier1:volume"></d2l-icon></button>
+					<button aria-label$="[[localize('Volume')]]" aria-haspopup="true" aria-expanded="{{ volumeControlVisible }}" on-tap="_toggleVolumeControl">
+						<d2l-icon class="control-icon" icon="d2l-tier1:volume"></d2l-icon>
+					</button>
 					<template is="dom-if" if="{{ volumeControlVisible }}">
 						<div class="volume-control-container" on-mouseover="_showVolumeControlByHover" on-mouseout="_hideVolumeControlByHover" >
 							<div class="volume-control" on-tap="_onVolumeControlTap">
@@ -187,6 +260,22 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 						<d2l-seek-bar id="seekBar" value="[[ percentComplete ]]" immediate-value="{{ immediateValue }}" aria-label$="[[localize('SeekBar')]]" on-drag-start="_onSeekStart" on-drag-end="_onSeekEnd" on-position-change="_onPositionChange"></d2l-seek-bar>
 					</div>
 					<div class="time-control time-control-right d2l-body-compact">{{ _formatTime(duration) }}</div>
+				</div>
+				<div class="control playback-speed-container" on-mouseover="_showPlaybackSpeedControlByHover" on-mouseout="_hidePlaybackSpeedControlByHover">
+					<button id="playback-speed-control-toggle" aria-label$="[[localize('PlaybackSpeed')]]" on-tap="_togglePlaybackSpeedControl" aria-haspopup="true" aria-controls="playback-speed-control" aria-expanded="{{ playbackSpeedControlVisible }}">
+						<div class="playback-speed d2l-body-compact">[[localize('PlaybackSpeedDisplay', 'playbackSpeed', _playbackSpeed)]]</div>
+					</button>
+					<template is="dom-if" if="{{ playbackSpeedControlVisible }}" id="playback-controls">
+						<div class="playback-speed-control-container" on-mouseover="_showPlaybackSpeedControlByHover" on-mouseout="_hidePlaybackSpeedControlByHover" >
+							<div role="menu" aria-labelledby="playback-speed-control-toggle" id="playback-speed-control">
+								<dom-repeat items="{{ _playbackSpeeds }}">
+									<template>
+										<button role="menuitem" on-tap="_onPlaybackSpeedControlChanged" value="{{ item }}" aria-label$="[[localize('PlaybackSpeedLabel', 'playbackSpeed', item)]]">[[_playbackSpeedLabel(item)]]</button>
+									</template>
+								</dom-repeat>
+							</div>
+						</div>
+					</template>
 				</div>
 				<div class="expand control">
 					<button aria-label$="[[localize('Fullscreen')]]" on-tap="_toggleFullscreen"><d2l-icon class="control-icon" icon="[[ _getFullscreenIcon(isFullscreen) ]]"></d2l-icon></button>
@@ -222,10 +311,34 @@ Polymer({
 			type: Number,
 			observer: '_rawVolumeChanged'
 		},
+		_currentPlaybackSpeedItem: {
+			type: Object,
+			value: null,
+		},
+		_playbackSpeed: {
+			type: Number,
+			value: 1,
+		},
+		_playbackSpeeds: {
+			type: Array,
+			value: [
+				0.25,
+				0.5,
+				0.75,
+				1,
+				1.25,
+				1.5,
+				2,
+			],
+		},
 		volumeControlVisible: {
 			type: Boolean,
 			value: false
-		}
+		},
+		playbackSpeedControlVisible: {
+			type: Boolean,
+			value: false
+		},
 	},
 
 	hostAttributes: {
@@ -234,7 +347,8 @@ Polymer({
 
 	keyBindings: {
 		'space': '_playPause',
-		'f': '_toggleFullscreen'
+		'f': '_toggleFullscreen',
+		'esc': '_closeControls'
 	},
 
 	_onContainerTap: function() {
@@ -252,6 +366,7 @@ Polymer({
 	},
 
 	_onVideoTap: function() {
+		this._closeControls();
 		this._playPause();
 	},
 
@@ -259,11 +374,29 @@ Polymer({
 		e.stopPropagation();
 	},
 
+	_onPlaybackSpeedControlChanged: function(e) {
+		if (this._currentPlaybackSpeedItem) {
+			this._currentPlaybackSpeedItem.removeAttribute('active');
+		}
+
+		this._currentPlaybackSpeedItem = e.target;
+		e.target.setAttribute('active', '');
+
+		this._playbackSpeed = parseFloat(e.target.value);
+		this.$.media.playbackRate = this._playbackSpeed;
+	},
+
 	_rawVolumeChanged: function(rawVolume) {
 		this.volume = rawVolume / 100;
 	},
 
+	_closeControls: function() {
+		this.volumeControlVisible = false;
+		this.playbackSpeedControlVisible = false;
+	},
+
 	_toggleFullscreen: function() {
+		this._closeControls();
 		this.$.fsApi.toggleFullscreen();
 	},
 
@@ -272,12 +405,37 @@ Polymer({
 		this.volumeControlVisible = !this.volumeControlVisible;
 	},
 
+	_togglePlaybackSpeedControl: function(e) {
+		e.stopPropagation();
+		this.playbackSpeedControlVisible = !this.playbackSpeedControlVisible;
+	},
+
 	_showVolumeControlByHover: function() {
 		this.volumeControlVisible = true;
 	},
 
 	_hideVolumeControlByHover: function() {
 		this.volumeControlVisible = false;
+	},
+
+	_showPlaybackSpeedControlByHover: function() {
+		this.playbackSpeedControlVisible = true;
+	},
+
+	_hidePlaybackSpeedControlByHover: function() {
+		this.playbackSpeedControlVisible = false;
+	},
+
+	_controlsOpen: function() {
+		return this.volumeControlVisible || this.playbackSpeedControlVisible;
+	},
+
+	_playbackSpeedLabel: function(playbackSpeed) {
+		if (playbackSpeed === 1) {
+			return this.localize('PlaybackSpeedNormal');
+		} else {
+			return playbackSpeed;
+		}
 	},
 
 	_isMobileSafari: function() {
