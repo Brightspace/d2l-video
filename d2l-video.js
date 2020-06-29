@@ -284,14 +284,14 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 				</div>
 				<div class="control playback-speed-container" on-mouseover="_showPlaybackSpeedControlByHover" on-mouseout="_hidePlaybackSpeedControlByHover">
 					<button id="playback-speed-control-toggle" aria-label$="[[localize('PlaybackSpeed')]]" on-tap="_togglePlaybackSpeedControl" aria-haspopup="true" aria-controls="playback-speed-control" aria-expanded="{{ playbackSpeedControlVisible }}">
-						<div class="playback-speed d2l-body-compact">[[localize('PlaybackSpeedDisplay', 'playbackSpeed', playbackSpeed)]]</div>
+						<div class="playback-speed d2l-body-compact">[[localize('PlaybackSpeedDisplay', 'playbackSpeed', _playbackSpeed)]]</div>
 					</button>
 					<template is="dom-if" if="{{ playbackSpeedControlVisible }}" id="playback-controls">
 						<div class="playback-speed-control-container" on-mouseover="_showPlaybackSpeedControlByHover" on-mouseout="_hidePlaybackSpeedControlByHover" >
 							<div role="menu" aria-labelledby="playback-speed-control-toggle" id="playback-speed-control">
-								<dom-repeat items="{{ playbackSpeeds }}">
+								<dom-repeat items="{{ _playbackSpeeds }}">
 									<template>
-										<button role="menuitem" on-tap="_onPlaybackSpeedControlChanged" value="{{ item }}" aria-label$="[[localize('PlaybackSpeedLabel', 'playbackSpeed', item)]]">[[localize(item)]]</button>
+										<button role="menuitem" on-tap="_onPlaybackSpeedControlChanged" value="{{ item }}" aria-label$="[[localize('PlaybackSpeedLabel', 'playbackSpeed', item)]]">[[_playbackSpeedLabel(item)]]</button>
 									</template>
 								</dom-repeat>
 							</div>
@@ -336,11 +336,11 @@ Polymer({
 			type: Object,
 			value: null,
 		},
-		playbackSpeed: {
+		_playbackSpeed: {
 			type: Number,
 			value: 1,
 		},
-		playbackSpeeds: {
+		_playbackSpeeds: {
 			type: Array,
 			value: [
 				0.25,
@@ -439,8 +439,8 @@ Polymer({
 		this._currentPlaybackSpeedItem = e.target;
 		e.target.setAttribute('active', '');
 
-		this.playbackSpeed = parseFloat(e.target.value);
-		this.$.media.playbackRate = this.playbackSpeed;
+		this._playbackSpeed = parseFloat(e.target.value);
+		this.$.media.playbackRate = this._playbackSpeed;
 	},
 
 	_activeSpeed: function(value) {
@@ -494,16 +494,27 @@ Polymer({
 	_controlsHidden: function() {
 		return !this.controlsVisible || this._isMobileSafari();
 	},
+
 	_showControls: function() {
 		this.controlsVisible = true;
 		this.shadowRoot.querySelector('#controlBar').removeAttribute('hidden');
 	},
+
 	_hideControls: function() {
 		this.controlsVisible = false;
 		this.shadowRoot.querySelector('#controlBar').setAttribute('hidden', '');
 	},
+
 	_onVideoMouseOver: function() {
 		this._showControls();
+  },
+
+	_playbackSpeedLabel: function(playbackSpeed) {
+		if (playbackSpeed === 1) {
+			return this.localize('PlaybackSpeedNormal');
+		} else {
+			return playbackSpeed;
+		}
 	},
 
 	_isMobileSafari: function() {
