@@ -270,7 +270,7 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 							<div role="menu" aria-labelledby="playback-speed-control-toggle" id="playback-speed-control">
 								<dom-repeat items="{{ _playbackSpeeds }}">
 									<template>
-										<button role="menuitem" on-tap="_onPlaybackSpeedControlChanged" value="{{ item }}" aria-label$="[[localize('PlaybackSpeedLabel', 'playbackSpeed', item)]]">[[localize(item)]]</button>
+										<button role="menuitem" on-tap="_onPlaybackSpeedControlChanged" value="{{ item }}" aria-label$="[[localize('PlaybackSpeedLabel', 'playbackSpeed', item)]]">[[_playbackSpeedLabel(item)]]</button>
 									</template>
 								</dom-repeat>
 							</div>
@@ -428,6 +428,14 @@ Polymer({
 
 	_controlsOpen: function() {
 		return this.volumeControlVisible || this.playbackSpeedControlVisible;
+	},
+
+	_playbackSpeedLabel: function(playbackSpeed) {
+		if (playbackSpeed === 1) {
+			return this.localize('PlaybackSpeedNormal');
+		} else {
+			return playbackSpeed;
+		}
 	},
 
 	_isMobileSafari: function() {
