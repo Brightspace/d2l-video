@@ -384,7 +384,7 @@ Polymer({
 		'esc': '_closeControls'
 	},
 
-	mousemove: function () {
+	mousemove: function() {
 		this._showControlsTimeout();
 	},
 
@@ -398,12 +398,12 @@ Polymer({
 		} else {
 			this.fadeInBuffer = false;
 		}
-		
+
 		if (this.isPlaying) {
 			this.timer = setTimeout(() => {
 				this.fadeInBuffer = true;
 				this._hideControls();
-			}, 1000)
+			}, 1000);
 		}
 	},
 
