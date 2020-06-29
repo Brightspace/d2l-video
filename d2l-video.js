@@ -254,7 +254,7 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 
 		<fullscreen-api id="fsApi" target="{{ _getFsTarget() }}" fullscreen="{{ isFullscreen }}"></fullscreen-api>
 
-		<div id="container" on-tap="_onContainerTap" on-mouseover="_onVideoMouseOver" on-mousemove="mousemove" on-focus="_onVideoFocus" on-keydown="_showControlsTimeout">
+		<div id="container" on-tap="_onContainerTap" on-mouseover="_onVideoMouseOver" on-mousemove="mousemove" on-focus="_onVideoFocus" on-keydown="_showControlsTemporary">
 			<video id="media" controls$="{{ _isMobileSafari() }}" preload="{{ _getPreload(autoLoad) }}" poster="{{ poster }}" on-tap="_onVideoTap" autoplay="{{ _getAutoplay(autoplay) }}" aria-label$="[[localize('EvidenceVideoPlayer')]]"></video>
 			<div id="controlBar" hidden$="{{ _controlsHidden() }}" class="layout horizontal center d2l-typography">
 				<d2l-seek-bar fullWidth solid id="seekBar" value="[[ percentComplete ]]" immediate-value="{{ immediateValue }}" aria-label$="[[localize('SeekBar')]]" on-drag-start="_onSeekStart" on-drag-end="_onSeekEnd" on-position-change="_onPositionChange"></d2l-seek-bar>
@@ -278,8 +278,6 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 				<div class="layout horizontal center flex time-container" dir="ltr">
 					<div class="time-control time-control-left d2l-body-compact">{{ _formatTime(currentTime) }}</div>
 					<div class="time-control-separator d2l-body-compact">/</div>
-					<!-- <div class="flex seek-control">
-					</div> -->
 					<div class="time-control time-control-right d2l-body-compact">{{ _formatTime(duration) }}</div>
 				</div>
 				<div class="control playback-speed-container" on-mouseover="_showPlaybackSpeedControlByHover" on-mouseout="_hidePlaybackSpeedControlByHover">
@@ -352,15 +350,7 @@ Polymer({
 				2,
 			],
 		},
-		fadeInBuffer: {
-			type: Boolean,
-			value: false
-		},
-		timer: {
-			type: Object,
-			value: null
-		},
-		controlsVisible: {
+		_controlsVisible: {
 			type: Boolean,
 			value: true
 		},
@@ -385,10 +375,10 @@ Polymer({
 	},
 
 	mousemove: function() {
-		this._showControlsTimeout();
+		this._showControlsTemporary();
 	},
 
-	_showControlsTimeout: function() {
+	_showControlsTemporary: function() {
 		if (!this.fadeInBuffer) {
 			if (this.timer) {
 				clearTimeout(this.timer);
@@ -403,7 +393,7 @@ Polymer({
 			this.timer = setTimeout(() => {
 				this.fadeInBuffer = true;
 				this._hideControls();
-			}, 1000);
+			}, 3000);
 		}
 	},
 
@@ -424,7 +414,7 @@ Polymer({
 	_onVideoTap: function() {
 		this._closeControls();
 		this._playPause();
-		this._showControlsTimeout();
+		this._showControlsTemporary();
 	},
 
 	_onVolumeControlTap: function(e) {
@@ -492,22 +482,22 @@ Polymer({
 	},
 
 	_controlsHidden: function() {
-		return !this.controlsVisible || this._isMobileSafari();
+		return !this._controlsVisible || this._isMobileSafari();
 	},
 
 	_showControls: function() {
-		this.controlsVisible = true;
+		this._controlsVisible = true;
 		this.shadowRoot.querySelector('#controlBar').removeAttribute('hidden');
 	},
 
 	_hideControls: function() {
-		this.controlsVisible = false;
+		this._controlsVisible = false;
 		this.shadowRoot.querySelector('#controlBar').setAttribute('hidden', '');
 	},
 
 	_onVideoMouseOver: function() {
 		this._showControls();
-  },
+	},
 
 	_playbackSpeedLabel: function(playbackSpeed) {
 		if (playbackSpeed === 1) {
