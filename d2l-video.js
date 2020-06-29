@@ -263,12 +263,12 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 				</div>
 				<div class="control playback-speed-container" on-mouseover="_showPlaybackSpeedControlByHover" on-mouseout="_hidePlaybackSpeedControlByHover">
 					<button id="playback-speed-control-toggle" aria-label$="[[localize('PlaybackSpeed')]]" on-tap="_togglePlaybackSpeedControl" aria-haspopup="true" aria-controls="playback-speed-control" aria-expanded="{{ playbackSpeedControlVisible }}">
-						<div class="playback-speed d2l-body-compact">[[localize('PlaybackSpeedDisplay', 'playbackSpeed', playbackSpeed)]]</div>
+						<div class="playback-speed d2l-body-compact">[[localize('PlaybackSpeedDisplay', 'playbackSpeed', _playbackSpeed)]]</div>
 					</button>
 					<template is="dom-if" if="{{ playbackSpeedControlVisible }}" id="playback-controls">
 						<div class="playback-speed-control-container" on-mouseover="_showPlaybackSpeedControlByHover" on-mouseout="_hidePlaybackSpeedControlByHover" >
 							<div role="menu" aria-labelledby="playback-speed-control-toggle" id="playback-speed-control">
-								<dom-repeat items="{{ playbackSpeeds }}">
+								<dom-repeat items="{{ _playbackSpeeds }}">
 									<template>
 										<button role="menuitem" on-tap="_onPlaybackSpeedControlChanged" value="{{ item }}" aria-label$="[[localize('PlaybackSpeedLabel', 'playbackSpeed', item)]]">[[localize(item)]]</button>
 									</template>
@@ -315,11 +315,11 @@ Polymer({
 			type: Object,
 			value: null,
 		},
-		playbackSpeed: {
+		_playbackSpeed: {
 			type: Number,
 			value: 1,
 		},
-		playbackSpeeds: {
+		_playbackSpeeds: {
 			type: Array,
 			value: [
 				0.25,
@@ -338,13 +338,6 @@ Polymer({
 		playbackSpeedControlVisible: {
 			type: Boolean,
 			value: false
-		},
-		/**
-		 * Tracks the currently focused item for managing tabindex
-		 */
-		_currentlyFocusedElement: {
-			type: Node,
-			value: null
 		},
 	},
 
@@ -389,12 +382,8 @@ Polymer({
 		this._currentPlaybackSpeedItem = e.target;
 		e.target.setAttribute('active', '');
 
-		this.playbackSpeed = parseFloat(e.target.value);
-		this.$.media.playbackRate = this.playbackSpeed;
-	},
-
-	_activeSpeed: function(value) {
-		return value === this.playbackSpeed;
+		this._playbackSpeed = parseFloat(e.target.value);
+		this.$.media.playbackRate = this._playbackSpeed;
 	},
 
 	_rawVolumeChanged: function(rawVolume) {

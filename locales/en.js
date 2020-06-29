@@ -9,6 +9,8 @@ window.D2L.PolymerBehaviors.D2LVideo.LangTerms = window.D2L.PolymerBehaviors.D2L
 	* @polymerBehavior
 	*/
 window.D2L.PolymerBehaviors.D2LVideo.LangTerms["en"] = {
+	"1": "Normal",
+	"2": "2",
 	"Play": "Play",
 	"Pause": "Pause",
 	"Volume": "Volume",
@@ -19,11 +21,9 @@ window.D2L.PolymerBehaviors.D2LVideo.LangTerms["en"] = {
 	"0.25": "0.25",
 	"0.5": "0.5",
 	"0.75": "0.75",
-	"1": "Normal",
 	"1.25": "1.25",
 	"1.5": "1.5",
 	"1.75": "1.75",
-	"2": "2",
 	"Fullscreen": "Fullscreen",
 	"EvidenceVideoPlayer": "Evidence Video Player",
 	"VolumeBar": "Volume Bar",
