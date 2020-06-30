@@ -60,9 +60,19 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 				left: 0;
 				right: 0;
 				bottom: 0;
-				background-color: rgba(0, 0, 0, 0.54);
 				box-sizing: border-box;
 				width: 100%;
+				background: rgba(0, 0, 0, 0.69);
+				transition: 0.1s;
+				padding-top: 6px;
+			}
+
+			#controlBar:focus,
+			#controlBar:focus-within {
+				opacity: 1;
+			}
+			#controlBar[hidden] {
+				opacity: 0;
 			}
 
 			#controlBar .control {
@@ -82,16 +92,9 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 			}
 
 			#controlBar .control button:focus {
-				outline: 2px solid white;
-				border-radius: 5px;
-			}
-
-			#controlBar .time-control {
-				margin: 0 5px;
-			}
-
-			#controlBar .seek-control {
-				margin: 0 10px;
+				box-shadow: 0 0 0 2px white;
+				border-radius: 4px;
+				outline: none;
 			}
 
 			.control-icon {
@@ -108,30 +111,48 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 			}
 
 			#seekBar {
-				--d2l-knob-size: 24px;
-				--d2l-inner-knob-margin: 6px;
+				--d2l-knob-size: 15px;
+				--d2l-outer-knob-color: var(--d2l-color-celestine-plus-1);
+				--d2l-knob-focus-color: #fff;
+				--d2l-knob-focus-size: 4px;
+				--d2l-progress-border-radius: 0; 
+
+				position: absolute;
+				left: 0;
+				right: 0;
+				top: -4px;
 			}
 
 			#volumeBar {
 				--d2l-knob-size: 18px;
-				--d2l-inner-knob-color: var(--d2l-color-regolith);
-				--d2l-knob-box-shadow: 1px 1px 0 0 rgba(0, 0, 0, 0.4);
+				--d2l-outer-knob-color: var(--d2l-color-celestine-plus-1);
+				--d2l-knob-focus-color: #fff;
+				--d2l-knob-focus-size: 4px;
 			}
 
-			.time-control {
+			.time-container {
+				margin-left: 9px;
+			}
+
+			.time-control-separator {
+				margin: 0 5px;
+			}
+
+			.time-control, 
+			.time-control-separator {
 				color: white;
 			}
 
 			.volume-control-container {
-				padding: 5px 20px 5px 40px;
+				padding: 4px 20px 5px 46px;
 				position: absolute;
-				bottom: 72px;
-				left: -73px;
+				bottom: 76px;
+				left: -77px;
 				transform: rotate(-90deg);
 			}
 
 			.volume-control {
-				background-color: rgba(0, 0, 0, 0.54);
+				background-color: rgba(0, 0, 0, 0.69);
 				border-radius: 0 8px 8px 0;
 				width: 120px;
 				padding: 12px 6px;
@@ -139,14 +160,14 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 
 			.playback-speed-control-container {
 				position: absolute;
-				bottom: 2px;
-				padding-bottom: 40px;
+				bottom: 6px;
+				padding-bottom: 43px;
 				left: -25px;
 			}
 
 			#playback-speed-control {
 				color: white;
-				background-color: rgba(0, 0, 0, 0.54);
+				background-color: rgba(0, 0, 0, 0.69);
 				border-radius: 5px 5px 0 0;
 				padding: 2px;
 				overflow: hidden;
@@ -197,9 +218,10 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 				width: 100%;
 			}
 
-			@media only screen and (max-width: 553px) {
+			@media only screen and (max-width: 320px) {
 				#controlBar {
 					padding: 0;
+					padding-top: 5px;
 				}
 
 				#controlBar .control {
@@ -223,9 +245,7 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 					bottom: 66px;
 					left: -77px;
 				}
-			}
 
-			@media only screen and (max-width: 450px) {
 				.playback-speed-container {
 					display: none;
 				}
@@ -234,9 +254,10 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 
 		<fullscreen-api id="fsApi" target="{{ _getFsTarget() }}" fullscreen="{{ isFullscreen }}"></fullscreen-api>
 
-		<div id="container" on-tap="_onContainerTap">
+		<div id="container" on-tap="_onContainerTap" on-mouseover="_onVideoMouseOver" on-mousemove="mousemove" on-focus="_onVideoFocus" on-keydown="_showControlsTemporary">
 			<video id="media" controls$="{{ _isMobileSafari() }}" preload="{{ _getPreload(autoLoad) }}" poster="{{ poster }}" on-tap="_onVideoTap" autoplay="{{ _getAutoplay(autoplay) }}" aria-label$="[[localize('EvidenceVideoPlayer')]]"></video>
-			<div id="controlBar" hidden$="{{ _isMobileSafari() }}" class="layout horizontal center d2l-typography">
+			<div id="controlBar" hidden$="{{ _controlsHidden() }}" class="layout horizontal center d2l-typography">
+				<d2l-seek-bar fullWidth solid id="seekBar" value="[[ percentComplete ]]" immediate-value="{{ immediateValue }}" aria-label$="[[localize('SeekBar')]]" on-drag-start="_onSeekStart" on-drag-end="_onSeekEnd" on-position-change="_onPositionChange"></d2l-seek-bar>
 				<div class="control play-pause-container">
 					<button hidden$="{{ isPlaying }}" on-tap="_playPause" aria-label$="[[localize('Play')]]"><d2l-icon icon="d2l-tier1:play"></d2l-icon></button>
 					<button hidden$="{{ !isPlaying }}" on-tap="_playPause" aria-label$="[[localize('Pause')]]"><d2l-icon icon="d2l-tier1:pause"></d2l-icon></button>
@@ -248,7 +269,7 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 					<template is="dom-if" if="{{ volumeControlVisible }}">
 						<div class="volume-control-container" on-mouseover="_showVolumeControlByHover" on-mouseout="_hideVolumeControlByHover" >
 							<div class="volume-control" on-tap="_onVolumeControlTap">
-								<d2l-seek-bar id="volumeBar" value="40" immediate-value="{{ rawVolume }}" vertical="" aria-label$="[[localize('VolumeBar')]]"></d2l-seek-bar>
+								<d2l-seek-bar solid id="volumeBar" value="40" immediate-value="{{ rawVolume }}" vertical="" aria-label$="[[localize('VolumeBar')]]"></d2l-seek-bar>
 								<d2l-offscreen aria-live="assertive">[[localize('VolumeLevel', 'rawVolume', rawVolume)]]</d2l-offscreen>
 							</div>
 						</div>
@@ -256,9 +277,7 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 				</div>
 				<div class="layout horizontal center flex time-container" dir="ltr">
 					<div class="time-control time-control-left d2l-body-compact">{{ _formatTime(currentTime) }}</div>
-					<div class="flex seek-control">
-						<d2l-seek-bar id="seekBar" value="[[ percentComplete ]]" immediate-value="{{ immediateValue }}" aria-label$="[[localize('SeekBar')]]" on-drag-start="_onSeekStart" on-drag-end="_onSeekEnd" on-position-change="_onPositionChange"></d2l-seek-bar>
-					</div>
+					<div class="time-control-separator d2l-body-compact">/</div>
 					<div class="time-control time-control-right d2l-body-compact">{{ _formatTime(duration) }}</div>
 				</div>
 				<div class="control playback-speed-container" on-mouseover="_showPlaybackSpeedControlByHover" on-mouseout="_hidePlaybackSpeedControlByHover">
@@ -311,6 +330,9 @@ Polymer({
 			type: Number,
 			observer: '_rawVolumeChanged'
 		},
+		isPlaying: {
+			observer: '_onPlayPause'
+		},
 		_currentPlaybackSpeedItem: {
 			type: Object,
 			value: null,
@@ -331,6 +353,10 @@ Polymer({
 				2,
 			],
 		},
+		_controlsVisible: {
+			type: Boolean,
+			value: true
+		},
 		volumeControlVisible: {
 			type: Boolean,
 			value: false
@@ -349,6 +375,35 @@ Polymer({
 		'space': '_playPause',
 		'f': '_toggleFullscreen',
 		'esc': '_closeControls'
+	},
+
+	mousemove: function() {
+		this._showControlsTemporary();
+	},
+
+	_onPlayPause: function() {
+		this._showControlsTemporary();
+	},
+
+	_showControlsTemporary: function() {
+		this._showControls();
+
+		if (!this.fadeInBuffer) {
+			if (this.timer) {
+				clearTimeout(this.timer);
+				this.timer = 0;
+			}
+			this._showControls();
+		} else {
+			this.fadeInBuffer = false;
+		}
+
+		if (this.isPlaying) {
+			this.timer = setTimeout(() => {
+				this.fadeInBuffer = true;
+				this._hideControls();
+			}, 3000);
+		}
 	},
 
 	_onContainerTap: function() {
@@ -384,6 +439,10 @@ Polymer({
 
 		this._playbackSpeed = parseFloat(e.target.value);
 		this.$.media.playbackRate = this._playbackSpeed;
+	},
+
+	_activeSpeed: function(value) {
+		return value === this.playbackSpeed;
 	},
 
 	_rawVolumeChanged: function(rawVolume) {
@@ -428,6 +487,24 @@ Polymer({
 
 	_controlsOpen: function() {
 		return this.volumeControlVisible || this.playbackSpeedControlVisible;
+	},
+
+	_controlsHidden: function() {
+		return !this._controlsVisible || this._isMobileSafari();
+	},
+
+	_showControls: function() {
+		this._controlsVisible = true;
+		this.shadowRoot.querySelector('#controlBar').removeAttribute('hidden');
+	},
+
+	_hideControls: function() {
+		this._controlsVisible = false;
+		this.shadowRoot.querySelector('#controlBar').setAttribute('hidden', '');
+	},
+
+	_onVideoMouseOver: function() {
+		this._showControls();
 	},
 
 	_playbackSpeedLabel: function(playbackSpeed) {
