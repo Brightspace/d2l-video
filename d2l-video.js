@@ -120,7 +120,7 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 				position: absolute;
 				left: 0;
 				right: 0;
-				top: -5px;
+				top: -4px;
 			}
 
 			#volumeBar {
