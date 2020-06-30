@@ -330,6 +330,9 @@ Polymer({
 			type: Number,
 			observer: '_rawVolumeChanged'
 		},
+		isPlaying: {
+			observer: '_onPlayPause'
+		},
 		_currentPlaybackSpeedItem: {
 			type: Object,
 			value: null,
@@ -378,7 +381,13 @@ Polymer({
 		this._showControlsTemporary();
 	},
 
+	_onPlayPause: function() {
+		this._showControlsTemporary();
+	},
+
 	_showControlsTemporary: function() {
+		this._showControls();
+
 		if (!this.fadeInBuffer) {
 			if (this.timer) {
 				clearTimeout(this.timer);
@@ -414,7 +423,6 @@ Polymer({
 	_onVideoTap: function() {
 		this._closeControls();
 		this._playPause();
-		this._showControlsTemporary();
 	},
 
 	_onVolumeControlTap: function(e) {
