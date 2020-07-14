@@ -9,6 +9,7 @@
 import '@polymer/polymer/polymer-legacy.js';
 
 import { IronA11yKeysBehavior } from '@polymer/iron-a11y-keys-behavior/iron-a11y-keys-behavior.js';
+import { IronResizableBehavior } from '@polymer/iron-resizable-behavior/iron-resizable-behavior.js';
 import '@polymer/iron-flex-layout/iron-flex-layout-classes.js';
 import '@brightspace-ui/core/components/icons/icon.js';
 import '@brightspace-ui/core/components/offscreen/offscreen.js';
@@ -163,6 +164,7 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 				bottom: 6px;
 				padding-bottom: 43px;
 				left: -25px;
+				overflow: hidden;
 			}
 
 			#playback-speed-control {
@@ -170,7 +172,7 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 				background-color: rgba(0, 0, 0, 0.69);
 				border-radius: 5px 5px 0 0;
 				padding: 2px;
-				overflow: hidden;
+				overflow-y: auto;
 			}
 
 			#playback-speed-control button {
@@ -194,6 +196,11 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 				width: 32px;
 				line-height: 22px;
 				display: inline-block;
+			}
+
+			.playback-speed-container button {
+				font-size: inherit;
+				font-family: inherit;
 			}
 
 			button {
@@ -291,7 +298,7 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 							<div role="menu" aria-labelledby="playback-speed-control-toggle" id="playback-speed-control">
 								<dom-repeat items="{{ _playbackSpeeds }}">
 									<template>
-										<button role="menuitem" on-tap="_onPlaybackSpeedControlChanged" value="{{ item }}" aria-label$="[[localize('PlaybackSpeedLabel', 'playbackSpeed', item)]]">[[_playbackSpeedLabel(item)]]</button>
+										<button class="d2l-body-compact" role="menuitem" on-tap="_onPlaybackSpeedControlChanged" value="{{ item }}" aria-label$="[[localize('PlaybackSpeedLabel', 'playbackSpeed', item)]]">[[_playbackSpeedLabel(item)]]</button>
 									</template>
 								</dom-repeat>
 							</div>
@@ -320,6 +327,7 @@ Polymer({
 	behaviors: [
 		window.D2L.MediaBehavior,
 		IronA11yKeysBehavior,
+		IronResizableBehavior,
 		D2L.PolymerBehaviors.D2LVideo.LocalizeBehavior
 	],
 
@@ -377,6 +385,14 @@ Polymer({
 		'space': '_playPause',
 		'f': '_toggleFullscreen',
 		'esc': '_closeControls'
+	},
+
+	ready: function() {
+		this.addEventListener('iron-resize', this.onIronResize.bind(this));
+	},
+			
+	onIronResize: function() {
+		this._handleControlHeight();
 	},
 
 	mousemove: function() {
@@ -498,11 +514,23 @@ Polymer({
 	_showControls: function() {
 		this._controlsVisible = true;
 		this.shadowRoot.querySelector('#controlBar').removeAttribute('hidden');
+		this._handleControlHeight();
 	},
 
 	_hideControls: function() {
 		this._controlsVisible = false;
 		this.shadowRoot.querySelector('#controlBar').setAttribute('hidden', '');
+	},
+
+	_handleControlHeight: function() {
+		const control = this.shadowRoot.querySelector('#playback-speed-control');
+		if (control) {
+			if (this.offsetHeight < 320) {
+				control.style.height = `${this.offsetHeight - 60}px`;
+			} else {
+				control.style.height = '263px';
+			}
+		}
 	},
 
 	_onVideoMouseOver: function() {
