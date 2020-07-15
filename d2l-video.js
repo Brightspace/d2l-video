@@ -9,7 +9,7 @@
 import '@polymer/polymer/polymer-legacy.js';
 
 import { IronA11yKeysBehavior } from '@polymer/iron-a11y-keys-behavior/iron-a11y-keys-behavior.js';
-import { IronResizableBehavior } from '@polymer/iron-resizable-behavior/iron-resizable-behavior.js';
+import ResizeObserver from 'resize-observer-polyfill';
 import '@polymer/iron-flex-layout/iron-flex-layout-classes.js';
 import '@brightspace-ui/core/components/icons/icon.js';
 import '@brightspace-ui/core/components/offscreen/offscreen.js';
@@ -327,7 +327,6 @@ Polymer({
 	behaviors: [
 		window.D2L.MediaBehavior,
 		IronA11yKeysBehavior,
-		IronResizableBehavior,
 		D2L.PolymerBehaviors.D2LVideo.LocalizeBehavior
 	],
 
@@ -388,12 +387,12 @@ Polymer({
 	},
 
 	ready: function() {
-		this.addEventListener('iron-resize', this.onIronResize.bind(this));
+		const observer = new ResizeObserver(() => {
+			this._handleControlHeight();
+		});
+		observer.observe(this);
 	},
 
-	onIronResize: function() {
-		this._handleControlHeight();
-	},
 
 	mousemove: function() {
 		this._showControlsTemporary();
