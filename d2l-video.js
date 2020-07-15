@@ -390,7 +390,7 @@ Polymer({
 	ready: function() {
 		this.addEventListener('iron-resize', this.onIronResize.bind(this));
 	},
-			
+
 	onIronResize: function() {
 		this._handleControlHeight();
 	},
