@@ -169,6 +169,7 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-video">
 
 			#playback-speed-control {
 				color: white;
+				height: 263px;
 				background-color: rgba(0, 0, 0, 0.69);
 				border-radius: 5px 5px 0 0;
 				padding: 2px;
@@ -386,11 +387,15 @@ Polymer({
 		'esc': '_closeControls'
 	},
 
-	ready: function() {
-		const observer = new ResizeObserver(() => {
+	attached: function() {
+		this.observer = new ResizeObserver(() => {
 			this._handleControlHeight();
 		});
-		observer.observe(this);
+		this.observer.observe(this);
+	},
+
+	detached: function() {
+		if (this.observer) this.observer.disconnect();
 	},
 
 	mousemove: function() {
@@ -523,11 +528,7 @@ Polymer({
 	_handleControlHeight: function() {
 		const control = this.shadowRoot.querySelector('#playback-speed-control');
 		if (control) {
-			if (this.offsetHeight < 320) {
-				control.style.height = `${this.offsetHeight - 60}px`;
-			} else {
-				control.style.height = '263px';
-			}
+			control.style.maxHeight = `${this.offsetHeight - 60}px`;
 		}
 	},
 
