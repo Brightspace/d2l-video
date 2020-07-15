@@ -393,7 +393,6 @@ Polymer({
 		observer.observe(this);
 	},
 
-
 	mousemove: function() {
 		this._showControlsTemporary();
 	},
