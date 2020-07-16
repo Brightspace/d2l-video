@@ -6,7 +6,7 @@
   },
   "homepage": "https://github.com/Brightspace/d2l-video",
   "name": "@d2l/video",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "scripts": {
     "lint": "npm run lint:wc && npm run lint:js",
     "lint:js": "eslint . --ext .js,.html test/**/*.js test/**/*.html demo/**/*.js demo/**/*.html",
@@ -33,6 +33,7 @@
     "merge-stream": "^2.0.0",
     "polymer-cli": "^1.9.1",
     "require-dir": "^1.2.0",
+    "resize-observer-polyfill": "^1.5.1",
     "wct-browser-legacy": "^1.0.1"
   },
   "resolutions": {
@@ -47,7 +48,6 @@
     "@d2l/seek-bar": "Brightspace/d2l-seek-bar#semver:^1",
     "@polymer/iron-a11y-keys-behavior": "^3.0.0-pre.18",
     "@polymer/iron-flex-layout": "^3.0.0-pre.18",
-    "@polymer/iron-range-behavior": "^3.0.0-pre.18",
     "@polymer/polymer": "^3.0.0",
     "d2l-localize-behavior": "BrightspaceUI/localize-behavior#semver:^2",
     "fullscreen-api": "Brightspace/fullscreen-api#semver:^3"
